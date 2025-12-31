@@ -1,0 +1,55 @@
+{
+    "count": 3,
+    "items": [
+        {
+            "date": 1719386874,
+            "from_id": 596011113,
+            "id": 1,
+            "version": 10001822,
+            "out": 0,
+            "important": false,
+            "is_hidden": false,
+            "attachments": [],
+            "conversation_message_id": 1,
+            "fwd_messages": [],
+            "text": "Это сообщение отправлено пользователем!",
+            "peer_id": 596011113,
+            "random_id": 0
+        },
+        {
+            "date": 1762939870,
+            "from_id": -226352349,
+            "id": 2,
+            "version": 10001822,
+            "out": 1,
+            "important": false,
+            "is_hidden": false,
+            "admin_author_id": 493272546,
+            "attachments": [],
+            "conversation_message_id": 2,
+            "deleted": 1,
+            "fwd_messages": [],
+            "text": "Это сообщение отправлено администратором",
+            "is_unavailable": true,
+            "peer_id": 493272546,
+            "random_id": 1032898476
+        },
+        {
+            "date": 1763038061,
+            "from_id": 493272546,
+            "id": 3,
+            "version": 10001822,
+            "out": 0,
+            "important": false,
+            "is_hidden": false,
+            "attachments": [],
+            "conversation_message_id": 1,
+            "deleted": 1,
+            "fwd_messages": [],
+            "text": "Это сообщение отправил администратор из ЛС как юзер и удалил его.",
+            "is_unavailable": true,
+            "peer_id": 493272546,
+            "random_id": 0
+        }
+    ]
+}

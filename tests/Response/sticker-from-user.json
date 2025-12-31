@@ -1,0 +1,104 @@
+{
+    "group_id": 226352349,
+    "type": "message_new",
+    "event_id": "177dd0fc0a56976b5a5a80e576ad7eb64d16acda",
+    "v": "5.199",
+    "object": {
+        "client_info": {
+            "button_actions": [
+                "text",
+                "vkpay",
+                "open_app",
+                "location",
+                "open_link",
+                "open_photo",
+                "callback",
+                "intent_subscribe",
+                "intent_unsubscribe"
+            ],
+            "keyboard": true,
+            "inline_keyboard": true,
+            "carousel": true,
+            "lang_id": 0
+        },
+        "message": {
+            "date": 1763024109,
+            "from_id": 493272546,
+            "id": 446,
+            "version": 10000980,
+            "out": 0,
+            "fwd_messages": [],
+            "important": false,
+            "is_hidden": false,
+            "attachments": [
+                {
+                    "type": "sticker",
+                    "sticker": {
+                        "inner_type": "base_sticker_new",
+                        "sticker_id": 83972,
+                        "product_id": 1783,
+                        "images": [
+                            {
+                                "url": "https://vk.com/sticker/1-83972-64",
+                                "width": 64,
+                                "height": 64
+                            },
+                            {
+                                "url": "https://vk.com/sticker/1-83972-128",
+                                "width": 128,
+                                "height": 128
+                            },
+                            {
+                                "url": "https://vk.com/sticker/1-83972-256",
+                                "width": 256,
+                                "height": 256
+                            },
+                            {
+                                "url": "https://vk.com/sticker/1-83972-352",
+                                "width": 352,
+                                "height": 352
+                            },
+                            {
+                                "url": "https://vk.com/sticker/1-83972-512",
+                                "width": 512,
+                                "height": 512
+                            }
+                        ],
+                        "images_with_background": [
+                            {
+                                "url": "https://vk.com/sticker/1-83972-64b",
+                                "width": 64,
+                                "height": 64
+                            },
+                            {
+                                "url": "https://vk.com/sticker/1-83972-128b",
+                                "width": 128,
+                                "height": 128
+                            },
+                            {
+                                "url": "https://vk.com/sticker/1-83972-256b",
+                                "width": 256,
+                                "height": 256
+                            },
+                            {
+                                "url": "https://vk.com/sticker/1-83972-352b",
+                                "width": 352,
+                                "height": 352
+                            },
+                            {
+                                "url": "https://vk.com/sticker/1-83972-512b",
+                                "width": 512,
+                                "height": 512
+                            }
+                        ],
+                        "is_allowed": false
+                    }
+                }
+            ],
+            "conversation_message_id": 263,
+            "text": "",
+            "peer_id": 493272546,
+            "random_id": 0
+        }
+    }
+}
