@@ -249,4 +249,30 @@ abstract class VkBrownServerAbstract
 		return array_map(fn(array $item): Objects\User => new Objects\User($item), $response->getRaw() ?? []);
 	}
 
+	/**
+	 * Метод отправляет событие с действием, которое произойдет при нажатии на callback-кнопку.
+	 * @see https://dev.vk.com/ru/method/messages.sendMessageEventAnswer
+	 * @param string $eventId
+	 * @param int $userId
+	 * @param int $peerId
+	 * @param array|null $eventData
+	 * @return Response
+	 */
+	public function sendMessageEventAnswer(
+		string     $eventId,
+		int        $userId,
+		int        $peerId,
+		array|null $eventData = null,
+	): Response
+	{
+		$params = [
+			"event_id" => $eventId,
+			"user_id" => $userId,
+			"peer_id" => $peerId,
+		];
+		if ($eventData !== null) $params["event_data"] = json_encode($eventData);
+
+		return $this->sendRequest("messages.sendMessageEventAnswer", $params);
+	}
+
 }
