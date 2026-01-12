@@ -42,11 +42,13 @@ class VkBrownClient extends VkBrownClientAbstract
 	/**
 	 * Записываем ответ сервера.
 	 * @param array $update
-	 * @return void
+	 * @return static
 	 */
-	public function setUpdate(array $update): void
+	public function setUpdate(array $update): self
 	{
 		$this->response = $update;
+
+		return $this;
 	}
 
 }
