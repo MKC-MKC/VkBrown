@@ -41,7 +41,7 @@ readonly class Update extends ResponseWrapper
 
 	public function getMessageEvent(): object
 	{
-		$data = (array)$this->getData("object", []);
+		$data = (array)$this->getData(default: []);
 		return new MessageEvent($data);
 	}
 

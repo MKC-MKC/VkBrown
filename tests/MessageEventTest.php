@@ -19,7 +19,7 @@ class MessageEventTest extends TestCase
 	public static function testsForMessageEventData()
 	{
 		$data = self::MockData(__DIR__ . "/Response/messageEvent.json");
-		$update = (new VkBrownClient())->setUpdate($data)->getUpdate();
+		$update = (new VkBrownClient())->setUpdate($data["object"])->getUpdate();
 		$messageEvent = $update->getMessageEvent();
 
 		self::assertSame(111111111, $messageEvent->getUserId());
