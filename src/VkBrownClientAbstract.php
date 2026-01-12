@@ -17,7 +17,7 @@ abstract class VkBrownClientAbstract
 	 * Записываем ответ сервера.
 	 * @param array $update
 	 */
-	abstract public function setUpdates(array $update): void;
+	abstract public function setUpdate(array $update): void;
 
 	/**
 	 * Метод возвращает данные из входящего запроса.

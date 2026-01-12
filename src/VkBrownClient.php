@@ -31,8 +31,20 @@ class VkBrownClient extends VkBrownClientAbstract
 	 * Записываем ответ сервера.
 	 * @param array $update
 	 * @return void
+	 * @deprecated Нелогичное название
+	 * @use self::setUpdate
 	 */
 	public function setUpdates(array $update): void
+	{
+		$this->response = $update;
+	}
+
+	/**
+	 * Записываем ответ сервера.
+	 * @param array $update
+	 * @return void
+	 */
+	public function setUpdate(array $update): void
 	{
 		$this->response = $update;
 	}
