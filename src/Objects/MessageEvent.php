@@ -14,16 +14,6 @@ readonly class MessageEvent extends ResponseWrapper
 	/**
 	 * Случайная строка.
 	 * Активна в течение минуты, спустя минуту становится недействительной.
-	 * @return int
-	 */
-	public function getId(): int
-	{
-		return $this->getEventId();
-	}
-
-	/**
-	 * Alias: Случайная строка.
-	 * Активна в течение минуты, спустя минуту становится недействительной.
 	 * @return string
 	 */
 	public function getEventId(): string
