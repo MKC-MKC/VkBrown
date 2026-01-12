@@ -1,0 +1,86 @@
+{
+    "group_id": 226352349,
+    "type": "message_reply",
+    "event_id": "07e09aa3630ab82abd20836a62cc016491e128ca",
+    "v": "5.199",
+    "object": {
+        "date": 1763024545,
+        "from_id": 493272546,
+        "id": 448,
+        "version": 10000985,
+        "out": 1,
+        "fwd_messages": [],
+        "important": false,
+        "is_hidden": false,
+        "admin_author_id": 493272546,
+        "attachments": [
+            {
+                "type": "sticker",
+                "sticker": {
+                    "inner_type": "base_sticker_new",
+                    "sticker_id": 102578,
+                    "product_id": 10108,
+                    "images": [
+                        {
+                            "url": "https://vk.ru/sticker/1-102578-64",
+                            "width": 64,
+                            "height": 64
+                        },
+                        {
+                            "url": "https://vk.ru/sticker/1-102578-128",
+                            "width": 128,
+                            "height": 128
+                        },
+                        {
+                            "url": "https://vk.ru/sticker/1-102578-256",
+                            "width": 256,
+                            "height": 256
+                        },
+                        {
+                            "url": "https://vk.ru/sticker/1-102578-352",
+                            "width": 352,
+                            "height": 352
+                        },
+                        {
+                            "url": "https://vk.ru/sticker/1-102578-512",
+                            "width": 512,
+                            "height": 512
+                        }
+                    ],
+                    "images_with_background": [
+                        {
+                            "url": "https://vk.ru/sticker/1-102578-64b",
+                            "width": 64,
+                            "height": 64
+                        },
+                        {
+                            "url": "https://vk.ru/sticker/1-102578-128b",
+                            "width": 128,
+                            "height": 128
+                        },
+                        {
+                            "url": "https://vk.ru/sticker/1-102578-256b",
+                            "width": 256,
+                            "height": 256
+                        },
+                        {
+                            "url": "https://vk.ru/sticker/1-102578-352b",
+                            "width": 352,
+                            "height": 352
+                        },
+                        {
+                            "url": "https://vk.ru/sticker/1-102578-512b",
+                            "width": 512,
+                            "height": 512
+                        }
+                    ],
+                    "is_allowed": false
+                }
+            }
+        ],
+        "conversation_message_id": 265,
+        "text": "",
+        "peer_id": 493272546,
+        "random_id": 0
+    }
+}

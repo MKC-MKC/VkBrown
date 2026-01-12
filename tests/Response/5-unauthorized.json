@@ -1,0 +1,32 @@
+{
+    "error": {
+        "error_code": 5,
+        "error_msg": "User authorization failed: invalid access_token (4).",
+        "request_params": [
+            {
+                "key": "method",
+                "value": "messages.send"
+            },
+            {
+                "key": "oauth",
+                "value": "1"
+            },
+            {
+                "key": "v",
+                "value": "5.199"
+            },
+            {
+                "key": "random_id",
+                "value": "012345678909876543210"
+            },
+            {
+                "key": "peer_id",
+                "value": "1234567890"
+            },
+            {
+                "key": "message",
+                "value": "*******"
+            }
+        ]
+    }
+}
