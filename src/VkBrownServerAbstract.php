@@ -92,7 +92,7 @@ abstract class VkBrownServerAbstract
 		string|null $forward = null,
 		int|null    $stickerId = null,
 		int|null    $groupId = null,
-		string|null $keyboard = null,
+		array|null  $keyboard = null,
 		string|null $template = null,
 		string|null $payload = null,
 		string|null $contentSource = null,
@@ -122,7 +122,7 @@ abstract class VkBrownServerAbstract
 		if ($forward !== null) $params["forward"] = $forward;
 		if ($stickerId !== null) $params["sticker_id"] = $stickerId;
 		if ($groupId !== null) $params["group_id"] = $groupId;
-		if ($keyboard !== null) $params["keyboard"] = $keyboard;
+		if ($keyboard !== null) $params["keyboard"] = json_encode($keyboard);
 		if ($template !== null) $params["template"] = $template;
 		if ($payload !== null) $params["payload"] = $payload;
 		if ($contentSource !== null) $params["content_source"] = $contentSource;
@@ -180,7 +180,7 @@ abstract class VkBrownServerAbstract
 		bool|null   $dontParseLinks = null,
 		bool|null   $disableMentions = null,
 		string|null $template = null,
-		string|null $keyboard = null
+		array|null  $keyboard = null
 	)
 	{
 		$params = ["peer_id" => $peerId];
@@ -196,7 +196,7 @@ abstract class VkBrownServerAbstract
 		if ($dontParseLinks !== null) $params["dont_parse_links"] = (int)$dontParseLinks;
 		if ($disableMentions !== null) $params["disable_mentions"] = (int)$disableMentions;
 		if ($template !== null) $params["template"] = $template;
-		if ($keyboard !== null) $params["keyboard"] = $keyboard;
+		if ($keyboard !== null) $params["keyboard"] = json_encode($keyboard);
 
 		return $this->sendRequest("messages.edit", $params);
 	}
