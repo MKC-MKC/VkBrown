@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haikiri\VkBrown;
 
 readonly class Response
@@ -13,7 +15,7 @@ readonly class Response
 		private string     $version,
 		private array      $object,
 		private array|null $items,
-		private mixed      $raw,
+		private array      $raw,
 	)
 	{
 	}
@@ -21,15 +23,50 @@ readonly class Response
 	public static function fromResponse(array $response): self
 	{
 		return new self(
-			groupId: (int)($response["group_id"] ?? -1),
-			count: (int)($response["count"] ?? -1),
-			type: (string)($response["type"] ?? ""),
-			eventId: (string)($response["event_id"] ?? ""),
-			version: (string)($response["v"] ?? ""),
-			object: is_array($response["object"] ?? null) ? $response["object"] : [],
-			items: is_array($response["items"] ?? null) ? $response["items"] : null,
+			groupId: self::readNullableInt($response, "group_id"),
+			count: self::readNullableInt($response, "count"),
+			type: self::readString($response, "type"),
+			eventId: self::readString($response, "event_id"),
+			version: self::readString($response, "v"),
+			object: self::readArray($response, "object"),
+			items: self::readNullableArray($response, "items"),
 			raw: $response,
 		);
+	}
+
+	protected static function readString(array $response, string $key): string
+	{
+		$value = $response[$key] ?? null;
+		if ($value === null) return "";
+
+		return is_scalar($value) ? (string)$value : "";
+	}
+
+	protected static function readNullableInt(array $response, string $key): int|null
+	{
+		$value = $response[$key] ?? null;
+		if ($value === null) return null;
+
+		if (is_int($value)) return $value;
+		if (is_string($value) && $value !== "" && preg_match('/^-?\d+$/', $value) === 1) return (int)$value;
+
+		return null;
+	}
+
+	protected static function readArray(array $response, string $key, array $default = []): array
+	{
+		$value = $response[$key] ?? null;
+		if ($value === null) return $default;
+
+		return is_array($value) ? $value : $default;
+	}
+
+	protected static function readNullableArray(array $response, string $key): array|null
+	{
+		$value = $response[$key] ?? null;
+		if ($value === null) return null;
+
+		return is_array($value) ? $value : null;
 	}
 
 	public function getGroupId(): int|null
@@ -67,7 +104,7 @@ readonly class Response
 		return $this->items;
 	}
 
-	public function getRaw()
+	public function getRaw(): array
 	{
 		return $this->raw;
 	}

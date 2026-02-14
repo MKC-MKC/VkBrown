@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Haikiri\VkBrown;
 
-use Haikiri\VkBrown\Exceptions\VkMainException;
 use GuzzleHttp\Client;
+use Haikiri\VkBrown\Exceptions\VkMainException;
+use LogicException;
 use Throwable;
 
 class VkBrownServer extends VkBrownServerAbstract
@@ -123,8 +124,12 @@ class VkBrownServer extends VkBrownServerAbstract
 	{
 		if (!is_string($json)) throw new VkMainException("Invalid response from the server: \$json is not a string");
 		$result = json_decode($json, $asArray, $depth, $flags);
-		if (self::$debug) error_log(PHP_EOL . "<<<<<<<<<<" . PHP_EOL . var_export($result, true));
-		if (json_last_error() !== JSON_ERROR_NONE) throw new VkMainException(json_last_error_msg(), json_last_error());
+		if (self::$debug) error_log(PHP_EOL . "**********" . PHP_EOL . var_export($result, true));
+		if (json_last_error() !== JSON_ERROR_NONE) throw new LogicException(json_last_error_msg(), json_last_error());
+		if (!is_array($result) && !is_object($result)) {
+			$type = get_debug_type($result);
+			throw new LogicException("Invalid response from the server: JSON must be object or array, got $type");
+		}
 		return $result;
 	}
 
