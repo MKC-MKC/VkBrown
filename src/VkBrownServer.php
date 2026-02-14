@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Haikiri\VkBrown;
 
-use Haikiri\VkBrown\Exceptions\VkMainException;
 use GuzzleHttp\Client;
+use Haikiri\VkBrown\Exceptions\VkMainException;
 use Throwable;
 
 class VkBrownServer extends VkBrownServerAbstract
