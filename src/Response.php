@@ -15,7 +15,7 @@ readonly class Response
 		private string     $version,
 		private array      $object,
 		private array|null $items,
-		private mixed      $raw,
+		private array      $raw,
 	)
 	{
 	}
@@ -69,7 +69,7 @@ readonly class Response
 		return $this->items;
 	}
 
-	public function getRaw()
+	public function getRaw(): array
 	{
 		return $this->raw;
 	}
