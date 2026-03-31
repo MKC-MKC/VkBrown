@@ -34,9 +34,7 @@ final class UploadSaveResponseNormalizer
 		}
 
 		# Иногда VK может прислать сразу один объект документа без массива и без поля `type`.
-		if (is_array($raw) && isset($raw["owner_id"], $raw["id"])) {
-			return [$raw];
-		}
+		if (is_array($raw) && isset($raw["owner_id"], $raw["id"])) return [$raw];
 
 		# Для любых остальных форм возвращаем пустой список, чтобы не ронять вызывающий код на экзотическом ответе.
 		return [];
@@ -52,9 +50,7 @@ final class UploadSaveResponseNormalizer
 	public static function normalizeListResponse(mixed $response): array
 	{
 		$raw = self::extractRawResponse($response);
-		if (!is_array($raw) || !array_is_list($raw)) {
-			return [];
-		}
+		if (!is_array($raw) || !array_is_list($raw)) return [];
 
 		# В ответе оставляем только реальные объектоподобные элементы, чтобы контракт списка был однородным.
 		return array_values(array_filter($raw, static fn(mixed $item): bool => is_array($item)));
@@ -69,11 +65,7 @@ final class UploadSaveResponseNormalizer
 	 */
 	private static function extractRawResponse(mixed $response): mixed
 	{
-		if ($response instanceof Response) {
-			return $response->getRaw();
-		}
-
-		return $response;
+		return $response instanceof Response ? $response->getRaw() : $response;
 	}
 
 }
