@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "actions": [
+    {
+      "name": "Test: PhpUnit",
+      "icon": "bug",
+      "command": "vendor/bin/phpunit --colors=always tests"
+    }
+  ]
+}
