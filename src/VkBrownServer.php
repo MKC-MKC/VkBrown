@@ -25,8 +25,8 @@ class VkBrownServer extends VkBrownServerAbstract
 		# Сериализация пустых параметров.
 		$isMultipart = $headers === ["Content-Type: multipart/form-data"];
 		if (!$isMultipart && $params) {
-			$params = array_filter($params, fn($value) => !is_null($value));
-			$params = array_map(function ($value) {
+			$params = array_filter($params, static fn($value) => !is_null($value));
+			$params = array_map(static function ($value) {
 				return (is_array($value) || is_object($value)) ? json_encode($value) : $value;
 			}, $params);
 		}
@@ -104,7 +104,7 @@ class VkBrownServer extends VkBrownServerAbstract
 			$response = self::validate($body, true);
 			self::apiResponseValidate($response);
 
-			return array_map(fn(array $item): Response => Response::fromResponse($item), $response["updates"]);
+			return array_map(static fn(array $item): Response => Response::fromResponse($item), $response["updates"]);
 		} catch (Throwable $e) {
 			throw new VkMainException($e->getMessage(), $e->getCode());
 		}
