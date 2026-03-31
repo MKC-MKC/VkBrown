@@ -4,9 +4,20 @@ declare(strict_types=1);
 
 namespace Haikiri\VkBrown;
 
+use Haikiri\VkBrown\Route\BoardRoute;
+use Haikiri\VkBrown\Route\DocsRoute;
+use Haikiri\VkBrown\Route\GroupsRoute;
+use Haikiri\VkBrown\Route\MessagesRoute;
+use Haikiri\VkBrown\Route\PhotosRoute;
+
 abstract class VkBrownServerAbstract
 {
 	public static bool $debug;
+	private BoardRoute|null $boardRoute = null;
+	private DocsRoute|null $docsRoute = null;
+	private MessagesRoute|null $messagesRoute = null;
+	private GroupsRoute|null $groupsRoute = null;
+	private PhotosRoute|null $photosRoute = null;
 
 	public function __construct(
 		private readonly string      $token,
@@ -65,6 +76,31 @@ abstract class VkBrownServerAbstract
 	public function getConfirmation(): string|null
 	{
 		return $this->confirmation;
+	}
+
+	public function messages(): MessagesRoute
+	{
+		return $this->messagesRoute ??= new MessagesRoute($this);
+	}
+
+	public function docs(): DocsRoute
+	{
+		return $this->docsRoute ??= new DocsRoute($this);
+	}
+
+	public function photos(): PhotosRoute
+	{
+		return $this->photosRoute ??= new PhotosRoute($this);
+	}
+
+	public function board(): BoardRoute
+	{
+		return $this->boardRoute ??= new BoardRoute($this);
+	}
+
+	public function groups(): GroupsRoute
+	{
+		return $this->groupsRoute ??= new GroupsRoute($this);
 	}
 
 	public function getMe(): Objects\User
