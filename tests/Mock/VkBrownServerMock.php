@@ -15,7 +15,7 @@ final class VkBrownServerMock extends VkBrownServer
 
 	public function __construct(
 		protected string $token,
-		protected string $groupId,
+		protected string|int|null $groupId,
 		string|null      $mockedData,
 		string|null      $confirmation = null,
 		string|null      $version = null,

@@ -77,11 +77,11 @@ class VkBrownServer extends VkBrownServerAbstract
 	public function getUpdates(int $timeout = 25, array $allowedUpdates = [], int|null $offset = null): array
 	{
 		if (!empty($allowedUpdates)) {
-			$allowedUpdates["group_id"] = $this->getGroupId();
+			$allowedUpdates["group_id"] = $this->resolveGroupId();
 			$this->sendRequest("groups.setLongPollSettings", $allowedUpdates);
 		}
 
-		$response = $this->sendRequest("groups.getLongPollServer", ["group_id" => $this->getGroupId()]);
+		$response = $this->sendRequest("groups.getLongPollServer", ["group_id" => $this->resolveGroupId()]);
 		$data = $response->getRaw();
 		$longPoolServer = $data["server"];
 		$longPoolKey = $data["key"];

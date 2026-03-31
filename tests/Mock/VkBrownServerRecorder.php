@@ -14,11 +14,11 @@ final class VkBrownServerRecorder extends VkBrownServerAbstract
 	public array $requestedHeaders = [];
 	private mixed $response;
 
-	public function __construct(mixed $response = true)
+	public function __construct(mixed $response = true, string|int|null $groupId = "123456789")
 	{
 		parent::__construct(
 			token: "vk1.a.Too.Long.Group.Token",
-			groupId: "123456789",
+			groupId: $groupId,
 		);
 		$this->response = $response;
 	}

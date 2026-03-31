@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Haikiri\VkBrown;
 
+use Haikiri\VkBrown\Exceptions\VkMainException;
 use Haikiri\VkBrown\Route\BoardRoute;
 use Haikiri\VkBrown\Route\DocsRoute;
 use Haikiri\VkBrown\Route\GroupsRoute;
@@ -14,6 +15,7 @@ use Haikiri\VkBrown\Route\WallRoute;
 abstract class VkBrownServerAbstract
 {
 	public static bool $debug;
+	private int|null $resolvedGroupId = null;
 	private BoardRoute|null $boardRoute = null;
 	private DocsRoute|null $docsRoute = null;
 	private MessagesRoute|null $messagesRoute = null;
@@ -23,7 +25,7 @@ abstract class VkBrownServerAbstract
 
 	public function __construct(
 		private readonly string      $token,
-		private readonly string      $groupId,
+		private readonly string|int|null $groupId = null,
 		private readonly string|null $confirmation = null,
 		private string|null          $version = null,
 		private string|null          $url = null,
@@ -59,7 +61,42 @@ abstract class VkBrownServerAbstract
 	 */
 	public function getGroupId(): string
 	{
-		return $this->groupId;
+		return (string)($this->groupId ?? "");
+	}
+
+	/**
+	 * Метод возвращает ID группы в числовом виде.
+	 * Если ID не был передан явно, пытаемся один раз получить его через `groups.getById` по текущему group token.
+	 *
+	 * @return int
+	 * @throws VkMainException
+	 */
+	public function resolveGroupId(): int
+	{
+		# Если ID уже был разрешён ранее в этом экземпляре SDK, повторный сетевой вызов не нужен.
+		if ($this->resolvedGroupId !== null) {
+			return $this->resolvedGroupId;
+		}
+
+		# Если ID пришёл в конструктор явно, считаем это источником истины и просто кэшируем числовое значение.
+		$groupId = $this->getGroupId();
+		if ($groupId !== "" && preg_match('/^\d+$/', $groupId) === 1) {
+			return $this->resolvedGroupId = (int)$groupId;
+		}
+
+		# Иначе делаем fallback-вызов groups.getById, который VK умеет обслуживать по самому group token без явного group_id.
+		$response = $this->groups()->getById();
+		$rawResponse = $response instanceof Response ? $response->getRaw() : $response;
+		$groups = is_array($rawResponse) ? ($rawResponse["groups"] ?? []) : [];
+		$resolvedGroupId = $groups[0]["id"] ?? null;
+
+		# Если VK не вернул ожидаемый список групп, считаем, что SDK не смог безопасно определить group_id.
+		if (!is_int($resolvedGroupId) && !(is_string($resolvedGroupId) && preg_match('/^\d+$/', $resolvedGroupId) === 1)) {
+			throw new VkMainException("Unable to resolve VK group_id from token");
+		}
+
+		# После успешного разрешения сохраняем значение в объекте SDK, чтобы не дёргать API повторно.
+		return $this->resolvedGroupId = (int)$resolvedGroupId;
 	}
 
 	/**
