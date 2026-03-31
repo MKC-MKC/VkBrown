@@ -1711,7 +1711,7 @@ abstract class VkBrownServerAbstract
 		string|null $title = null,
 		string|null $tags = null,
 		bool|null   $returnTags = null,
-	): mixed
+	): array
 	{
 		return UploadSaveResponseNormalizer::normalizeDocsSaveResponse($this->sendRequest("docs.save", [
 			"file" => $file,
@@ -1799,7 +1799,7 @@ abstract class VkBrownServerAbstract
 	 * Метод сохраняет фотографию в личном сообщении после её успешной загрузки на сервер.
 	 * @see https://dev.vk.com/ru/method/photos.saveMessagesPhoto
 	 */
-	public function photosSaveMessagesPhoto(string|null $photo = null, int|null $server = null, string|null $hash = null): mixed
+	public function photosSaveMessagesPhoto(string|null $photo = null, int|null $server = null, string|null $hash = null): array
 	{
 		return UploadSaveResponseNormalizer::normalizeListResponse($this->sendRequest("photos.saveMessagesPhoto", [
 			"photo" => $photo,
