@@ -9,6 +9,7 @@ use Haikiri\VkBrown\Route\DocsRoute;
 use Haikiri\VkBrown\Route\GroupsRoute;
 use Haikiri\VkBrown\Route\MessagesRoute;
 use Haikiri\VkBrown\Route\PhotosRoute;
+use Haikiri\VkBrown\Route\WallRoute;
 
 abstract class VkBrownServerAbstract
 {
@@ -18,6 +19,7 @@ abstract class VkBrownServerAbstract
 	private MessagesRoute|null $messagesRoute = null;
 	private GroupsRoute|null $groupsRoute = null;
 	private PhotosRoute|null $photosRoute = null;
+	private WallRoute|null $wallRoute = null;
 
 	public function __construct(
 		private readonly string      $token,
@@ -96,6 +98,11 @@ abstract class VkBrownServerAbstract
 	public function board(): BoardRoute
 	{
 		return $this->boardRoute ??= new BoardRoute($this);
+	}
+
+	public function wall(): WallRoute
+	{
+		return $this->wallRoute ??= new WallRoute($this);
 	}
 
 	public function groups(): GroupsRoute
