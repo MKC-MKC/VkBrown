@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Haikiri\VkBrown\Route;
 
+use Haikiri\VkBrown\Helper\UploadSaveResponseNormalizer;
+
 class DocsRoute extends AbstractRoute
 {
 
@@ -48,7 +50,9 @@ class DocsRoute extends AbstractRoute
 	 */
 	public function save(array $params = []): mixed
 	{
-		return $this->request("docs.save", $params, ["tags"]);
+		return UploadSaveResponseNormalizer::normalizeDocsSaveResponse(
+			$this->request("docs.save", $params, ["tags"]),
+		);
 	}
 
 	/**

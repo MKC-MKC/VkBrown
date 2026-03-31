@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Haikiri\VkBrown\Tests;
 
+use Haikiri\VkBrown\Response;
 use Haikiri\VkBrown\Tests\Mock\VkBrownServerRecorder;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -40,6 +41,33 @@ class DocsRouteTest extends TestCase
 
 		self::assertSame($expectedMethod, $server->requestedMethod);
 		self::assertSame($expectedParams, $server->requestedParams);
+	}
+
+	public function testSaveNormalizesWrappedDocObjectResponse(): void
+	{
+		$server = new VkBrownServerRecorder(
+			Response::fromResponse([
+				"type" => "doc",
+				"doc" => [
+					"id" => 17,
+					"owner_id" => 44,
+					"title" => "probe.txt",
+				],
+			]),
+		);
+
+		$documents = $server->docs()->save(["file" => "uploaded-file-token"]);
+
+		self::assertSame(
+			[
+				[
+					"id" => 17,
+					"owner_id" => 44,
+					"title" => "probe.txt",
+				],
+			],
+			$documents,
+		);
 	}
 
 	public static function docsRouteProvider(): array

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Haikiri\VkBrown\Route;
 
+use Haikiri\VkBrown\Helper\UploadSaveResponseNormalizer;
+
 class PhotosRoute extends AbstractRoute
 {
 
@@ -48,7 +50,9 @@ class PhotosRoute extends AbstractRoute
 	 */
 	public function saveMessagesPhoto(array $params = []): mixed
 	{
-		return $this->request("photos.saveMessagesPhoto", $params);
+		return UploadSaveResponseNormalizer::normalizeListResponse(
+			$this->request("photos.saveMessagesPhoto", $params),
+		);
 	}
 
 	/**

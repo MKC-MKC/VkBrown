@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Haikiri\VkBrown\Tests;
 
+use Haikiri\VkBrown\Response;
 use Haikiri\VkBrown\Tests\Mock\VkBrownServerRecorder;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -40,6 +41,36 @@ class PhotosRouteTest extends TestCase
 
 		self::assertSame($expectedMethod, $server->requestedMethod);
 		self::assertSame($expectedParams, $server->requestedParams);
+	}
+
+	public function testSaveMessagesPhotoReturnsNormalizedPhotoList(): void
+	{
+		$server = new VkBrownServerRecorder(
+			Response::fromResponse([
+				[
+					"id" => 17,
+					"owner_id" => -237180095,
+					"access_key" => "preview-key",
+				],
+			]),
+		);
+
+		$photos = $server->photos()->saveMessagesPhoto([
+			"photo" => '[{"id":"temp"}]',
+			"server" => 15,
+			"hash" => "hash-value",
+		]);
+
+		self::assertSame(
+			[
+				[
+					"id" => 17,
+					"owner_id" => -237180095,
+					"access_key" => "preview-key",
+				],
+			],
+			$photos,
+		);
 	}
 
 	public static function photosRouteProvider(): array
