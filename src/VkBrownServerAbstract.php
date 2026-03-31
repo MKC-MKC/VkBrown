@@ -149,7 +149,7 @@ abstract class VkBrownServerAbstract
 		$params = [
 			"peer_id" => $peerId,
 			"message" => $text,
-			"random_id" => $randomId ?? mt_rand(0, PHP_INT_MAX),
+			"random_id" => $randomId ?? mt_rand(0, 2147483647),
 		];
 
 		if ($userId !== null) $params["user_id"] = $userId;
