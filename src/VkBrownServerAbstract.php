@@ -279,7 +279,7 @@ abstract class VkBrownServerAbstract
 		if ($nameCase !== null) $params["name_case"] = $nameCase;
 
 		$response = $this->sendRequest("users.get", $params);
-		return array_map(fn(array $item): Objects\User => new Objects\User($item), $response->getRaw() ?? []);
+		return array_map(static fn(array $item): Objects\User => new Objects\User($item), $response->getRaw() ?? []);
 	}
 
 	/**
