@@ -55,7 +55,7 @@ abstract class VkBrownServerAbstract
 
 	/**
 	 * Метод возвращает ID группы в числовом виде.
-	 * Если ID не был передан явно, пытаемся один раз получить его через `groups.getById` по текущему group token.
+	 * Если ID не был передан явно, пытаемся один раз получить его через `groups.getById` по-текущему group token.
 	 *
 	 * @return int
 	 * @throws VkMainException
