@@ -263,7 +263,7 @@ abstract class VkBrownServerAbstract
 		if ($fields !== null) $params["fields"] = $fields;
 
 		$response = $this->sendRequest("messages.getById", $params);
-		return array_map(fn(array $item): Objects\Message => new Objects\Message($item), $response?->getItems() ?? []);
+		return array_map(static fn(array $item): Objects\Message => new Objects\Message($item), $response?->getItems() ?? []);
 	}
 
 	/**
