@@ -14,13 +14,13 @@ final class VkBrownServerMock extends VkBrownServer
 	private static string $expected_token = "vk1.a.Too.Long.Group.Token";
 
 	public function __construct(
-		protected string $token,
+		protected string          $token,
 		protected string|int|null $groupId,
-		string|null      $mockedData,
-		string|null      $confirmation = null,
-		string|null      $version = null,
-		string|null      $url = null,
-						 $debug = false,
+		string|null               $mockedData,
+		string|null               $confirmation = null,
+		string|null               $version = null,
+		string|null               $url = null,
+								  $debug = false,
 	)
 	{
 		parent::__construct($token, $groupId, $confirmation, $version, $url, $debug);

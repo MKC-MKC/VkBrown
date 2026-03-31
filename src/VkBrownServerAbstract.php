@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnused */
 
 declare(strict_types=1);
 
@@ -367,9 +367,9 @@ abstract class VkBrownServerAbstract
 	 */
 	public function getByConversationMessageId(
 		int|string|null $peerId = null,
-		array|null $conversationMessageIds = null,
-		bool|null $extended = null,
-		array|null $fields = null,
+		array|null      $conversationMessageIds = null,
+		bool|null       $extended = null,
+		array|null      $fields = null,
 		int|string|null $groupId = null,
 	): array
 	{
@@ -392,10 +392,10 @@ abstract class VkBrownServerAbstract
 		int|string|null $peerId = null,
 		int|string|null $offset = null,
 		int|string|null $count = null,
-		bool|null $extended = null,
-		array|null $fields = null,
+		bool|null       $extended = null,
+		array|null      $fields = null,
 		int|string|null $groupId = null,
-		array|null $memberIds = null,
+		array|null      $memberIds = null,
 	): mixed
 	{
 		return $this->sendRequest("messages.getConversationMembers", [
@@ -416,10 +416,10 @@ abstract class VkBrownServerAbstract
 	public function getConversations(
 		int|string|null $offset = null,
 		int|string|null $count = null,
-		string|null $filter = null,
-		bool|null $extended = null,
+		string|null     $filter = null,
+		bool|null       $extended = null,
 		int|string|null $startMessageId = null,
-		array|null $fields = null,
+		array|null      $fields = null,
 		int|string|null $groupId = null,
 	): mixed
 	{
@@ -439,9 +439,9 @@ abstract class VkBrownServerAbstract
 	 * @see https://dev.vk.com/ru/method/messages.getConversationsById
 	 */
 	public function getConversationsById(
-		array|null $peerIds = null,
-		bool|null $extended = null,
-		array|null $fields = null,
+		array|null      $peerIds = null,
+		bool|null       $extended = null,
+		array|null      $fields = null,
 		int|string|null $groupId = null,
 	): mixed
 	{
@@ -463,9 +463,9 @@ abstract class VkBrownServerAbstract
 		int|string|null $userId = null,
 		int|string|null $peerId = null,
 		int|string|null $startMessageId = null,
-		int|null $rev = null,
-		bool|null $extended = null,
-		array|null $fields = null,
+		int|null        $rev = null,
+		bool|null       $extended = null,
+		array|null      $fields = null,
 		int|string|null $groupId = null,
 	): mixed
 	{
@@ -487,21 +487,21 @@ abstract class VkBrownServerAbstract
 	 * @see https://dev.vk.com/ru/method/messages.getHistoryAttachments
 	 */
 	public function getHistoryAttachments(
-		array|null $attachmentTypes = null,
+		array|null      $attachmentTypes = null,
 		int|string|null $groupId = null,
 		int|string|null $peerId = null,
 		int|string|null $cmid = null,
 		int|string|null $attachmentPosition = null,
 		int|string|null $offset = null,
 		int|string|null $count = null,
-		bool|null $extended = null,
-		array|null $fields = null,
+		bool|null       $extended = null,
+		array|null      $fields = null,
 		int|string|null $maxForwardsLevel = null,
-		bool|null $messageVideo = null,
-		string|null $mediaType = null,
-		string|null $startFrom = null,
-		bool|null $preserveOrder = null,
-		bool|null $photoSizes = null,
+		bool|null       $messageVideo = null,
+		string|null     $mediaType = null,
+		string|null     $startFrom = null,
+		bool|null       $preserveOrder = null,
+		bool|null       $photoSizes = null,
 	): mixed
 	{
 		return $this->sendRequest("messages.getHistoryAttachments", [
@@ -532,8 +532,8 @@ abstract class VkBrownServerAbstract
 		int|string|null $offset = null,
 		int|string|null $startMessageId = null,
 		int|string|null $previewLength = null,
-		array|null $fields = null,
-		bool|null $extended = null,
+		array|null      $fields = null,
+		bool|null       $extended = null,
 		int|string|null $groupId = null,
 	): mixed
 	{
@@ -553,13 +553,13 @@ abstract class VkBrownServerAbstract
 	 * @see https://dev.vk.com/ru/method/messages.getIntentUsers
 	 */
 	public function getIntentUsers(
-		string|null $intent = null,
+		string|null     $intent = null,
 		int|string|null $subscribeId = null,
 		int|string|null $offset = null,
 		int|string|null $count = null,
-		bool|null $extended = null,
-		string|null $nameCase = null,
-		array|null $fields = null,
+		bool|null       $extended = null,
+		string|null     $nameCase = null,
+		array|null      $fields = null,
 	): mixed
 	{
 		return $this->sendRequest("messages.getIntentUsers", [
@@ -591,19 +591,19 @@ abstract class VkBrownServerAbstract
 	 * @see https://dev.vk.com/ru/method/messages.getLongPollHistory
 	 */
 	public function getLongPollHistory(
-		int|null $ts = null,
-		int|null $pts = null,
+		int|null        $ts = null,
+		int|null        $pts = null,
 		int|string|null $previewLength = null,
-		bool|null $onlines = null,
-		array|null $fields = null,
+		bool|null       $onlines = null,
+		array|null      $fields = null,
 		int|string|null $eventsLimit = null,
 		int|string|null $msgsLimit = null,
 		int|string|null $maxMsgId = null,
 		int|string|null $groupId = null,
 		int|string|null $lpVersion = null,
 		int|string|null $lastN = null,
-		bool|null $credentials = null,
-		bool|null $extended = null,
+		bool|null       $credentials = null,
+		bool|null       $extended = null,
 	): mixed
 	{
 		return $this->sendRequest("messages.getLongPollHistory", [
@@ -670,7 +670,7 @@ abstract class VkBrownServerAbstract
 	 */
 	public function markAsAnsweredConversation(
 		int|string|null $peerId = null,
-		bool|null $answered = null,
+		bool|null       $answered = null,
 		int|string|null $groupId = null,
 	): mixed
 	{
@@ -687,7 +687,7 @@ abstract class VkBrownServerAbstract
 	 */
 	public function markAsImportantConversation(
 		int|string|null $peerId = null,
-		bool|null $important = null,
+		bool|null       $important = null,
 		int|string|null $groupId = null,
 	): mixed
 	{
@@ -703,11 +703,11 @@ abstract class VkBrownServerAbstract
 	 * @see https://dev.vk.com/ru/method/messages.markAsRead
 	 */
 	public function markAsRead(
-		array|null $messageIds = null,
+		array|null      $messageIds = null,
 		int|string|null $peerId = null,
 		int|string|null $startMessageId = null,
 		int|string|null $groupId = null,
-		bool|null $markConversationAsRead = null,
+		bool|null       $markConversationAsRead = null,
 		int|string|null $upToCmid = null,
 	): mixed
 	{
@@ -775,10 +775,10 @@ abstract class VkBrownServerAbstract
 	 * @see https://dev.vk.com/ru/method/messages.searchConversations
 	 */
 	public function searchConversations(
-		string|null $q = null,
+		string|null     $q = null,
 		int|string|null $count = null,
-		bool|null $extended = null,
-		array|null $fields = null,
+		bool|null       $extended = null,
+		array|null      $fields = null,
 		int|string|null $groupId = null,
 	): mixed
 	{
@@ -814,7 +814,7 @@ abstract class VkBrownServerAbstract
 	 */
 	public function setActivity(
 		int|string|null $peerId = null,
-		string $type = "typing",
+		string          $type = "typing",
 		int|string|null $groupId = null,
 		int|string|null $userId = null,
 	): mixed
@@ -855,7 +855,7 @@ abstract class VkBrownServerAbstract
 	 * @see https://dev.vk.com/ru/method/messages.getLongPollServer
 	 */
 	public function messagesGetLongPollServer(
-		bool|null $needPts = null,
+		bool|null       $needPts = null,
 		int|string|null $groupId = null,
 		int|string|null $lpVersion = null,
 	): mixed
@@ -872,14 +872,14 @@ abstract class VkBrownServerAbstract
 	 * @see https://dev.vk.com/ru/method/messages.search
 	 */
 	public function messagesSearch(
-		string|null $q = null,
+		string|null     $q = null,
 		int|string|null $peerId = null,
-		int|null $date = null,
+		int|null        $date = null,
 		int|string|null $previewLength = null,
 		int|string|null $offset = null,
 		int|string|null $count = null,
-		bool|null $extended = null,
-		array|null $fields = null,
+		bool|null       $extended = null,
+		array|null      $fields = null,
 		int|string|null $groupId = null,
 	): mixed
 	{
@@ -898,22 +898,22 @@ abstract class VkBrownServerAbstract
 
 	/**
 	 * Позволяет добавить адрес в сообщество.
-Список адресов может быть получен методом groups.getAddresses.
+	 * Список адресов может быть получен методом groups.getAddresses.
 	 * @see https://dev.vk.com/ru/method/groups.addAddress
 	 */
 	public function groupsAddAddress(
 		int|string|null $groupId = null,
-		string|null $title = null,
-		string|null $address = null,
-		string|null $additionalAddress = null,
+		string|null     $title = null,
+		string|null     $address = null,
+		string|null     $additionalAddress = null,
 		int|string|null $cityId = null,
 		int|string|null $metroId = null,
-		float|null $latitude = null,
-		float|null $longitude = null,
-		string|null $phone = null,
-		string|null $workInfoStatus = null,
-		string|null $timetable = null,
-		bool|null $isMainAddress = null,
+		float|null      $latitude = null,
+		float|null      $longitude = null,
+		string|null     $phone = null,
+		string|null     $workInfoStatus = null,
+		string|null     $timetable = null,
+		bool|null       $isMainAddress = null,
 	): mixed
 	{
 		return $this->sendRequest("groups.addAddress", [
@@ -938,9 +938,9 @@ abstract class VkBrownServerAbstract
 	 */
 	public function groupsAddCallbackServer(
 		int|string|null $groupId = null,
-		string|null $url = null,
-		string|null $title = null,
-		string|null $secretKey = null,
+		string|null     $url = null,
+		string|null     $title = null,
+		string|null     $secretKey = null,
 	): mixed
 	{
 		return $this->sendRequest("groups.addCallbackServer", [
@@ -992,51 +992,51 @@ abstract class VkBrownServerAbstract
 	 */
 	public function groupsEdit(
 		int|string|null $groupId = null,
-		string|null $title = null,
-		string|null $description = null,
-		string|null $screenName = null,
-		int|null $access = null,
-		string|null $website = null,
-		int|null $subject = null,
-		string|null $email = null,
-		string|null $phone = null,
-		string|null $rss = null,
-		int|null $eventStartDate = null,
-		int|null $eventFinishDate = null,
+		string|null     $title = null,
+		string|null     $description = null,
+		string|null     $screenName = null,
+		int|null        $access = null,
+		string|null     $website = null,
+		int|null        $subject = null,
+		string|null     $email = null,
+		string|null     $phone = null,
+		string|null     $rss = null,
+		int|null        $eventStartDate = null,
+		int|null        $eventFinishDate = null,
 		int|string|null $eventGroupId = null,
 		int|string|null $publicCategory = null,
 		int|string|null $publicSubcategory = null,
-		string|null $publicDate = null,
-		int|null $wall = null,
-		int|null $topics = null,
-		int|null $photos = null,
-		int|null $video = null,
-		int|null $audio = null,
-		bool|null $links = null,
-		bool|null $events = null,
-		bool|null $places = null,
-		bool|null $contacts = null,
-		int|null $docs = null,
-		int|null $wiki = null,
-		bool|null $messages = null,
-		bool|null $articles = null,
-		bool|null $addresses = null,
-		int|null $ageLimits = null,
-		bool|null $market = null,
-		string|null $marketButtons = null,
-		bool|null $marketComments = null,
-		array|null $marketCountry = null,
-		array|null $marketCity = null,
+		string|null     $publicDate = null,
+		int|null        $wall = null,
+		int|null        $topics = null,
+		int|null        $photos = null,
+		int|null        $video = null,
+		int|null        $audio = null,
+		bool|null       $links = null,
+		bool|null       $events = null,
+		bool|null       $places = null,
+		bool|null       $contacts = null,
+		int|null        $docs = null,
+		int|null        $wiki = null,
+		bool|null       $messages = null,
+		bool|null       $articles = null,
+		bool|null       $addresses = null,
+		int|null        $ageLimits = null,
+		bool|null       $market = null,
+		string|null     $marketButtons = null,
+		bool|null       $marketComments = null,
+		array|null      $marketCountry = null,
+		array|null      $marketCity = null,
 		int|string|null $marketCurrency = null,
 		int|string|null $marketContact = null,
 		int|string|null $marketWiki = null,
-		bool|null $obsceneFilter = null,
-		bool|null $obsceneStopwords = null,
-		bool|null $toxicFilter = null,
-		bool|null $disableRepliesFromGroups = null,
-		array|null $obsceneWords = null,
-		int|null $mainSection = null,
-		int|null $secondarySection = null,
+		bool|null       $obsceneFilter = null,
+		bool|null       $obsceneStopwords = null,
+		bool|null       $toxicFilter = null,
+		bool|null       $disableRepliesFromGroups = null,
+		array|null      $obsceneWords = null,
+		int|null        $mainSection = null,
+		int|null        $secondarySection = null,
 		int|string|null $country = null,
 		int|string|null $city = null,
 	): mixed
@@ -1100,17 +1100,17 @@ abstract class VkBrownServerAbstract
 	public function groupsEditAddress(
 		int|string|null $groupId = null,
 		int|string|null $addressId = null,
-		string|null $title = null,
-		string|null $address = null,
-		string|null $additionalAddress = null,
+		string|null     $title = null,
+		string|null     $address = null,
+		string|null     $additionalAddress = null,
 		int|string|null $cityId = null,
 		int|string|null $metroId = null,
-		float|null $latitude = null,
-		float|null $longitude = null,
-		string|null $phone = null,
-		string|null $workInfoStatus = null,
-		string|null $timetable = null,
-		bool|null $isMainAddress = null,
+		float|null      $latitude = null,
+		float|null      $longitude = null,
+		string|null     $phone = null,
+		string|null     $workInfoStatus = null,
+		string|null     $timetable = null,
+		bool|null       $isMainAddress = null,
 	): mixed
 	{
 		return $this->sendRequest("groups.editAddress", [
@@ -1137,9 +1137,9 @@ abstract class VkBrownServerAbstract
 	public function groupsEditCallbackServer(
 		int|string|null $groupId = null,
 		int|string|null $serverId = null,
-		string|null $url = null,
-		string|null $title = null,
-		string|null $secretKey = null,
+		string|null     $url = null,
+		string|null     $title = null,
+		string|null     $secretKey = null,
 	): mixed
 	{
 		return $this->sendRequest("groups.editCallbackServer", [
@@ -1170,7 +1170,7 @@ abstract class VkBrownServerAbstract
 		int|string|null $groupId = null,
 		int|string|null $offset = null,
 		int|string|null $count = null,
-		array|null $fields = null,
+		array|null      $fields = null,
 		int|string|null $ownerId = null,
 	): mixed
 	{
@@ -1258,12 +1258,12 @@ abstract class VkBrownServerAbstract
 	 * @see https://dev.vk.com/ru/method/groups.getMembers
 	 */
 	public function groupsGetMembers(
-		string|null $groupId = null,
-		string|null $sort = null,
+		string|null     $groupId = null,
+		string|null     $sort = null,
 		int|string|null $offset = null,
 		int|string|null $count = null,
-		array|null $fields = null,
-		string|null $filter = null,
+		array|null      $fields = null,
+		string|null     $filter = null,
 	): mixed
 	{
 		return $this->sendRequest("groups.getMembers", [
@@ -1312,10 +1312,10 @@ abstract class VkBrownServerAbstract
 	 * @see https://dev.vk.com/ru/method/groups.isMember
 	 */
 	public function groupsIsMember(
-		string|null $groupId = null,
+		string|null     $groupId = null,
 		int|string|null $userId = null,
-		array|null $userIds = null,
-		bool|null $extended = null,
+		array|null      $userIds = null,
+		bool|null       $extended = null,
 	): mixed
 	{
 		return $this->sendRequest("groups.isMember", [
@@ -1333,63 +1333,63 @@ abstract class VkBrownServerAbstract
 	public function groupsSetCallbackSettings(
 		int|string|null $groupId = null,
 		int|string|null $serverId = null,
-		string|null $apiVersion = null,
-		bool|null $messageNew = null,
-		bool|null $messageReply = null,
-		bool|null $messageAllow = null,
-		bool|null $messageEdit = null,
-		bool|null $messageDeny = null,
-		bool|null $messageTypingState = null,
-		bool|null $messageRead = null,
-		bool|null $photoNew = null,
-		bool|null $audioNew = null,
-		bool|null $videoNew = null,
-		bool|null $wallReplyNew = null,
-		bool|null $wallReplyEdit = null,
-		bool|null $wallReplyDelete = null,
-		bool|null $wallReplyRestore = null,
-		bool|null $wallPostNew = null,
-		bool|null $wallRepost = null,
-		bool|null $wallSchedulePostNew = null,
-		bool|null $wallSchedulePostDelete = null,
-		bool|null $boardPostNew = null,
-		bool|null $boardPostEdit = null,
-		bool|null $boardPostRestore = null,
-		bool|null $boardPostDelete = null,
-		bool|null $photoCommentNew = null,
-		bool|null $photoCommentEdit = null,
-		bool|null $photoCommentDelete = null,
-		bool|null $photoCommentRestore = null,
-		bool|null $videoCommentNew = null,
-		bool|null $videoCommentEdit = null,
-		bool|null $videoCommentDelete = null,
-		bool|null $videoCommentRestore = null,
-		bool|null $marketCommentNew = null,
-		bool|null $marketCommentEdit = null,
-		bool|null $marketCommentDelete = null,
-		bool|null $marketCommentRestore = null,
-		bool|null $marketOrderNew = null,
-		bool|null $marketOrderEdit = null,
-		bool|null $pollVoteNew = null,
-		bool|null $groupJoin = null,
-		bool|null $groupLeave = null,
-		bool|null $groupChangeSettings = null,
-		bool|null $groupChangePhoto = null,
-		bool|null $groupOfficersEdit = null,
-		bool|null $userBlock = null,
-		bool|null $userUnblock = null,
-		bool|null $leadFormsNew = null,
-		bool|null $likeAdd = null,
-		bool|null $likeRemove = null,
-		bool|null $messageEvent = null,
-		bool|null $messageReactionEvent = null,
-		bool|null $donutSubscriptionCreate = null,
-		bool|null $donutSubscriptionProlonged = null,
-		bool|null $donutSubscriptionCancelled = null,
-		bool|null $donutSubscriptionPriceChanged = null,
-		bool|null $donutSubscriptionExpired = null,
-		bool|null $donutMoneyWithdraw = null,
-		bool|null $donutMoneyWithdrawError = null,
+		string|null     $apiVersion = null,
+		bool|null       $messageNew = null,
+		bool|null       $messageReply = null,
+		bool|null       $messageAllow = null,
+		bool|null       $messageEdit = null,
+		bool|null       $messageDeny = null,
+		bool|null       $messageTypingState = null,
+		bool|null       $messageRead = null,
+		bool|null       $photoNew = null,
+		bool|null       $audioNew = null,
+		bool|null       $videoNew = null,
+		bool|null       $wallReplyNew = null,
+		bool|null       $wallReplyEdit = null,
+		bool|null       $wallReplyDelete = null,
+		bool|null       $wallReplyRestore = null,
+		bool|null       $wallPostNew = null,
+		bool|null       $wallRepost = null,
+		bool|null       $wallSchedulePostNew = null,
+		bool|null       $wallSchedulePostDelete = null,
+		bool|null       $boardPostNew = null,
+		bool|null       $boardPostEdit = null,
+		bool|null       $boardPostRestore = null,
+		bool|null       $boardPostDelete = null,
+		bool|null       $photoCommentNew = null,
+		bool|null       $photoCommentEdit = null,
+		bool|null       $photoCommentDelete = null,
+		bool|null       $photoCommentRestore = null,
+		bool|null       $videoCommentNew = null,
+		bool|null       $videoCommentEdit = null,
+		bool|null       $videoCommentDelete = null,
+		bool|null       $videoCommentRestore = null,
+		bool|null       $marketCommentNew = null,
+		bool|null       $marketCommentEdit = null,
+		bool|null       $marketCommentDelete = null,
+		bool|null       $marketCommentRestore = null,
+		bool|null       $marketOrderNew = null,
+		bool|null       $marketOrderEdit = null,
+		bool|null       $pollVoteNew = null,
+		bool|null       $groupJoin = null,
+		bool|null       $groupLeave = null,
+		bool|null       $groupChangeSettings = null,
+		bool|null       $groupChangePhoto = null,
+		bool|null       $groupOfficersEdit = null,
+		bool|null       $userBlock = null,
+		bool|null       $userUnblock = null,
+		bool|null       $leadFormsNew = null,
+		bool|null       $likeAdd = null,
+		bool|null       $likeRemove = null,
+		bool|null       $messageEvent = null,
+		bool|null       $messageReactionEvent = null,
+		bool|null       $donutSubscriptionCreate = null,
+		bool|null       $donutSubscriptionProlonged = null,
+		bool|null       $donutSubscriptionCancelled = null,
+		bool|null       $donutSubscriptionPriceChanged = null,
+		bool|null       $donutSubscriptionExpired = null,
+		bool|null       $donutMoneyWithdraw = null,
+		bool|null       $donutMoneyWithdrawError = null,
 	): mixed
 	{
 		return $this->sendRequest("groups.setCallbackSettings", [
@@ -1461,59 +1461,59 @@ abstract class VkBrownServerAbstract
 	 */
 	public function groupsSetLongPollSettings(
 		int|string|null $groupId = null,
-		bool|null $enabled = null,
-		string|null $apiVersion = null,
-		bool|null $messageNew = null,
-		bool|null $messageReply = null,
-		bool|null $messageAllow = null,
-		bool|null $messageDeny = null,
-		bool|null $messageEdit = null,
-		bool|null $messageTypingState = null,
-		bool|null $messageRead = null,
-		bool|null $photoNew = null,
-		bool|null $audioNew = null,
-		bool|null $videoNew = null,
-		bool|null $wallReplyNew = null,
-		bool|null $wallReplyEdit = null,
-		bool|null $wallReplyDelete = null,
-		bool|null $wallReplyRestore = null,
-		bool|null $wallPostNew = null,
-		bool|null $wallRepost = null,
-		bool|null $boardPostNew = null,
-		bool|null $boardPostEdit = null,
-		bool|null $boardPostRestore = null,
-		bool|null $boardPostDelete = null,
-		bool|null $photoCommentNew = null,
-		bool|null $photoCommentEdit = null,
-		bool|null $photoCommentDelete = null,
-		bool|null $photoCommentRestore = null,
-		bool|null $videoCommentNew = null,
-		bool|null $videoCommentEdit = null,
-		bool|null $videoCommentDelete = null,
-		bool|null $videoCommentRestore = null,
-		bool|null $marketCommentNew = null,
-		bool|null $marketCommentEdit = null,
-		bool|null $marketCommentDelete = null,
-		bool|null $marketCommentRestore = null,
-		bool|null $pollVoteNew = null,
-		bool|null $groupJoin = null,
-		bool|null $groupLeave = null,
-		bool|null $groupChangeSettings = null,
-		bool|null $groupChangePhoto = null,
-		bool|null $groupOfficersEdit = null,
-		bool|null $userBlock = null,
-		bool|null $userUnblock = null,
-		bool|null $likeAdd = null,
-		bool|null $likeRemove = null,
-		bool|null $messageEvent = null,
-		bool|null $messageReactionEvent = null,
-		bool|null $donutSubscriptionCreate = null,
-		bool|null $donutSubscriptionProlonged = null,
-		bool|null $donutSubscriptionCancelled = null,
-		bool|null $donutSubscriptionPriceChanged = null,
-		bool|null $donutSubscriptionExpired = null,
-		bool|null $donutMoneyWithdraw = null,
-		bool|null $donutMoneyWithdrawError = null,
+		bool|null       $enabled = null,
+		string|null     $apiVersion = null,
+		bool|null       $messageNew = null,
+		bool|null       $messageReply = null,
+		bool|null       $messageAllow = null,
+		bool|null       $messageDeny = null,
+		bool|null       $messageEdit = null,
+		bool|null       $messageTypingState = null,
+		bool|null       $messageRead = null,
+		bool|null       $photoNew = null,
+		bool|null       $audioNew = null,
+		bool|null       $videoNew = null,
+		bool|null       $wallReplyNew = null,
+		bool|null       $wallReplyEdit = null,
+		bool|null       $wallReplyDelete = null,
+		bool|null       $wallReplyRestore = null,
+		bool|null       $wallPostNew = null,
+		bool|null       $wallRepost = null,
+		bool|null       $boardPostNew = null,
+		bool|null       $boardPostEdit = null,
+		bool|null       $boardPostRestore = null,
+		bool|null       $boardPostDelete = null,
+		bool|null       $photoCommentNew = null,
+		bool|null       $photoCommentEdit = null,
+		bool|null       $photoCommentDelete = null,
+		bool|null       $photoCommentRestore = null,
+		bool|null       $videoCommentNew = null,
+		bool|null       $videoCommentEdit = null,
+		bool|null       $videoCommentDelete = null,
+		bool|null       $videoCommentRestore = null,
+		bool|null       $marketCommentNew = null,
+		bool|null       $marketCommentEdit = null,
+		bool|null       $marketCommentDelete = null,
+		bool|null       $marketCommentRestore = null,
+		bool|null       $pollVoteNew = null,
+		bool|null       $groupJoin = null,
+		bool|null       $groupLeave = null,
+		bool|null       $groupChangeSettings = null,
+		bool|null       $groupChangePhoto = null,
+		bool|null       $groupOfficersEdit = null,
+		bool|null       $userBlock = null,
+		bool|null       $userUnblock = null,
+		bool|null       $likeAdd = null,
+		bool|null       $likeRemove = null,
+		bool|null       $messageEvent = null,
+		bool|null       $messageReactionEvent = null,
+		bool|null       $donutSubscriptionCreate = null,
+		bool|null       $donutSubscriptionProlonged = null,
+		bool|null       $donutSubscriptionCancelled = null,
+		bool|null       $donutSubscriptionPriceChanged = null,
+		bool|null       $donutSubscriptionExpired = null,
+		bool|null       $donutMoneyWithdraw = null,
+		bool|null       $donutMoneyWithdrawError = null,
 	): mixed
 	{
 		return $this->sendRequest("groups.setLongPollSettings", [
@@ -1580,11 +1580,11 @@ abstract class VkBrownServerAbstract
 	 */
 	public function groupsSetSettings(
 		int|string|null $groupId = null,
-		bool|null $messages = null,
-		bool|null $botsCapabilities = null,
-		bool|null $botsStartButton = null,
-		bool|null $botsAddToChat = null,
-		bool|null $botOnlineBookingEnabled = null,
+		bool|null       $messages = null,
+		bool|null       $botsCapabilities = null,
+		bool|null       $botsStartButton = null,
+		bool|null       $botsAddToChat = null,
+		bool|null       $botOnlineBookingEnabled = null,
 	): mixed
 	{
 		return $this->sendRequest("groups.setSettings", [
@@ -1631,7 +1631,7 @@ abstract class VkBrownServerAbstract
 		int|string|null $groupId = null,
 		int|string|null $tagId = null,
 		int|string|null $userId = null,
-		string|null $act = null,
+		string|null     $act = null,
 	): mixed
 	{
 		return $this->sendRequest("groups.tagBind", [
@@ -1710,7 +1710,7 @@ abstract class VkBrownServerAbstract
 		string|null $file = null,
 		string|null $title = null,
 		string|null $tags = null,
-		bool|null $returnTags = null,
+		bool|null   $returnTags = null,
 	): mixed
 	{
 		return UploadSaveResponseNormalizer::normalizeDocsSaveResponse($this->sendRequest("docs.save", [
@@ -1726,11 +1726,11 @@ abstract class VkBrownServerAbstract
 	 * @see https://dev.vk.com/ru/method/docs.search
 	 */
 	public function docsSearch(
-		string|null $q = null,
-		bool|null $searchOwn = null,
+		string|null     $q = null,
+		bool|null       $searchOwn = null,
 		int|string|null $count = null,
 		int|string|null $offset = null,
-		bool|null $returnTags = null,
+		bool|null       $returnTags = null,
 	): mixed
 	{
 		return $this->sendRequest("docs.search", [
@@ -1748,9 +1748,9 @@ abstract class VkBrownServerAbstract
 	 */
 	public function photosGetChatUploadServer(
 		int|string|null $chatId = null,
-		int|null $cropX = null,
-		int|null $cropY = null,
-		int|null $cropWidth = null,
+		int|null        $cropX = null,
+		int|null        $cropY = null,
+		int|null        $cropWidth = null,
 	): mixed
 	{
 		return $this->sendRequest("photos.getChatUploadServer", [
@@ -1778,11 +1778,11 @@ abstract class VkBrownServerAbstract
 	 */
 	public function photosGetOwnerCoverPhotoUploadServer(
 		int|string|null $groupId = null,
-		int|null $cropX = null,
-		int|null $cropY = null,
-		int|null $cropX2 = null,
-		int|null $cropY2 = null,
-		bool|null $isVideoCover = null,
+		int|null        $cropX = null,
+		int|null        $cropY = null,
+		int|null        $cropX2 = null,
+		int|null        $cropY2 = null,
+		bool|null       $isVideoCover = null,
 	): mixed
 	{
 		return $this->sendRequest("photos.getOwnerCoverPhotoUploadServer", [
@@ -1813,14 +1813,14 @@ abstract class VkBrownServerAbstract
 	 * @see https://dev.vk.com/ru/method/photos.saveOwnerCoverPhoto
 	 */
 	public function photosSaveOwnerCoverPhoto(
-		int|null $cropX = null,
-		int|null $cropHeight = null,
-		int|null $cropY = null,
-		int|null $cropWidth = null,
+		int|null    $cropX = null,
+		int|null    $cropHeight = null,
+		int|null    $cropY = null,
+		int|null    $cropWidth = null,
 		string|null $responseJson = null,
 		string|null $hash = null,
 		string|null $photo = null,
-		bool|null $isVideoCover = null,
+		bool|null   $isVideoCover = null,
 	): mixed
 	{
 		return $this->sendRequest("photos.saveOwnerCoverPhoto", [
@@ -1889,11 +1889,11 @@ abstract class VkBrownServerAbstract
 		int|string|null $ownerId = null,
 		int|string|null $postId = null,
 		int|string|null $fromGroup = null,
-		string|null $message = null,
+		string|null     $message = null,
 		int|string|null $replyToComment = null,
-		array|null $attachments = null,
-		int|null $stickerId = null,
-		string|null $guid = null,
+		array|null      $attachments = null,
+		int|null        $stickerId = null,
+		string|null     $guid = null,
 	): mixed
 	{
 		return $this->sendRequest("wall.createComment", [

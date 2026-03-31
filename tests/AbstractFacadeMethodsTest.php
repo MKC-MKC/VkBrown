@@ -23,10 +23,10 @@ class AbstractFacadeMethodsTest extends TestCase
 	#[DataProvider("delegationProvider")]
 	public function testAbstractFacadeDelegatesDirectlyToExpectedVkMethod(
 		string $method,
-		array $args,
+		array  $args,
 		string $expectedMethod,
-		array $expectedParams,
-		mixed $response = true,
+		array  $expectedParams,
+		mixed  $response = true,
 	): void
 	{
 		$server = new VkBrownServerRecorder($response);

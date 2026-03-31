@@ -15,10 +15,10 @@ class FlatMethodsCompatibilityTest extends TestCase
 	#[DataProvider("flatMethodsProvider")]
 	public function testFlatMethodsStillDelegateToExpectedVkRoutes(
 		string $method,
-		array $args,
+		array  $args,
 		string $expectedMethod,
-		array $expectedParams,
-		bool $needsResponseWrapper = false,
+		array  $expectedParams,
+		bool   $needsResponseWrapper = false,
 	): void
 	{
 		$server = new VkBrownServerRecorder();
