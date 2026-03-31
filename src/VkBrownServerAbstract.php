@@ -182,7 +182,7 @@ abstract class VkBrownServerAbstract
 		array|null      $cmIds = null,
 		string|int|null $peerId = null,
 		string|int|null $groupId = null,
-		bool            $deleteForAll = true,
+		bool|null       $deleteForAll = true,
 		bool|null       $spam = null,
 		int|null        $reason = null,
 	): mixed
@@ -271,7 +271,7 @@ abstract class VkBrownServerAbstract
 	 * @see https://dev.vk.com/ru/method/users.get
 	 * @return Objects\User[]
 	 */
-	public function getUsers(array $userIds, array|null $fields = null, string $nameCase = "nom"): array
+	public function getUsers(array $userIds, array|null $fields = null, string|null $nameCase = "nom"): array
 	{
 		$params = [];
 		$params["user_ids"] = implode(",", array_map("strval", $userIds));
