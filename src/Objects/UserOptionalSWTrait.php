@@ -6,9 +6,9 @@ namespace Haikiri\VkBrown\Objects;
 
 trait UserOptionalSWTrait
 {
-	const SEX_UNKNOWN = 0;
-	const SEX_FEMALE = 1;
-	const SEX_MALE = 2;
+	public const SEX_UNKNOWN = 0;
+	public const SEX_FEMALE = 1;
+	public const SEX_MALE = 2;
 
 	/**
 	 * Короткое имя страницы.
