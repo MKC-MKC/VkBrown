@@ -88,7 +88,7 @@ readonly class Message extends ResponseWrapper
 	public function getForwardMessages(): array
 	{
 		$data = (array)$this->getData("fwd_messages", []);
-		return array_map(fn(array $item): Message => new Message($item), $data);
+		return array_map(static fn(array $item): Message => new Message($item), $data);
 	}
 
 	/**
