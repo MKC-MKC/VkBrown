@@ -24,12 +24,12 @@ abstract class VkBrownServerAbstract
 	private WallRoute|null $wallRoute = null;
 
 	public function __construct(
-		private readonly string      $token,
+		private readonly string          $token,
 		private readonly string|int|null $groupId = null,
-		private readonly string|null $confirmation = null,
-		private string|null          $version = null,
-		private string|null          $url = null,
-									 $debug = false,
+		private readonly string|null     $confirmation = null,
+		private string|null              $version = null,
+		private string|null              $url = null,
+										 $debug = false,
 	)
 	{
 		$this->version = !empty($version) ? $version : "5.199";
