@@ -78,7 +78,7 @@ abstract class VkBrownServerAbstract
 	 */
 	public function sendMessage(
 		int|string  $peerId,
-		string      $text,
+		string|null $text = null,
 		int|null    $userId = null,
 		string|null $peerIds = null,
 		string|null $domain = null,
@@ -105,10 +105,10 @@ abstract class VkBrownServerAbstract
 	{
 		$params = [
 			"peer_id" => $peerId,
-			"message" => $text,
 			"random_id" => $randomId ?? mt_rand(0, PHP_INT_MAX),
 		];
 
+		if ($text !== null) $params["message"] = $text;
 		if ($userId !== null) $params["user_id"] = $userId;
 		if ($peerIds !== null) $params["peer_ids"] = $peerIds;
 		if ($domain !== null) $params["domain"] = $domain;
