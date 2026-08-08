@@ -34,16 +34,16 @@ readonly class KeyboardHelper
 
 	/**
 	 * Генератор кнопки с действием.
-	 * @param string $label
 	 * @param KeyboardType $type
+	 * @param string|null $label
 	 * @param KeyboardColor|null $color
 	 * @param array|null $payload
 	 * @param string|null $link
 	 * @return array
 	 */
 	public static function buildAction(
-		string             $label,
 		KeyboardType       $type,
+		string|null        $label = null,
 		KeyboardColor|null $color = null,
 		?array             $payload = null,
 		string|null        $link = null,
@@ -73,8 +73,8 @@ readonly class KeyboardHelper
 	public static function textButton(string $label, ?array $payload = null, ?KeyboardColor $color = null): array
 	{
 		return self::buildAction(
-			label: $label,
 			type: KeyboardType::TEXT,
+			label: $label,
 			color: $color,
 			payload: $payload,
 		);
@@ -91,8 +91,8 @@ readonly class KeyboardHelper
 	public static function openLinkButton(string $label, string $link, ?array $payload = null, ?KeyboardColor $color = null): array
 	{
 		return self::buildAction(
-			label: $label,
 			type: KeyboardType::LINK,
+			label: $label,
 			color: $color,
 			payload: $payload,
 			link: $link,
@@ -109,8 +109,8 @@ readonly class KeyboardHelper
 	public static function callbackButton(string $label, ?array $payload = null, KeyboardColor|null $color = null): array
 	{
 		return self::buildAction(
-			label: $label,
 			type: KeyboardType::CALLBACK,
+			label: $label,
 			color: $color,
 			payload: $payload,
 		);
