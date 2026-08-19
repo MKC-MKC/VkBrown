@@ -60,6 +60,7 @@ final class KeyboardHelperTest extends TestCase
 				],
 			],
 			"one_time" => false,
+			"inline" => false,
 		];
 
 		self::assertSame($expected, $keyboard);
@@ -96,6 +97,7 @@ final class KeyboardHelperTest extends TestCase
 					],
 				],
 			],
+			"one_time" => false,
 			"inline" => true,
 		], $keyboard);
 	}
