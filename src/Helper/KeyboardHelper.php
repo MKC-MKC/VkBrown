@@ -111,7 +111,7 @@ readonly class KeyboardHelper
 	}
 
 	/**
-	 * Создать обычную клавиатуру под сообщением бота/администратора.
+	 * Создать обычную клавиатуру под полем ввода пользователя.
 	 * @param array $buttons
 	 * @param bool $isOneTime
 	 * @return array[]
@@ -122,7 +122,7 @@ readonly class KeyboardHelper
 	}
 
 	/**
-	 * Создать клавиатуру под полем ввода пользователя.
+	 * Создать клавиатуру внутри сообщения бота/администратора.
 	 * @param array $buttons
 	 * @return array[]
 	 */
