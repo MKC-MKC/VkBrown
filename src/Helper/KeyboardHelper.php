@@ -19,17 +19,11 @@ readonly class KeyboardHelper
 	 */
 	public static function buildKeyboard(array $buttons, bool $isInline = false, bool $isOneTime = false): array
 	{
-		$keyboard = [
+		return [
 			"buttons" => $buttons,
+			"one_time" => $isOneTime,
+			"inline" => $isInline,
 		];
-
-		if ($isInline) {
-			$keyboard["inline"] = true;
-		} else {
-			$keyboard["one_time"] = $isOneTime;
-		}
-
-		return $keyboard;
 	}
 
 	/**
