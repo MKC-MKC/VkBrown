@@ -26,6 +26,7 @@ class MessageEventTest extends TestCase
 		self::assertSame(222222222, $messageEvent->getPeerId());
 		self::assertSame("863e06ef1e79", $messageEvent->getEventId());
 		self::assertSame(900, $messageEvent->getConversationMessageId());
+		self::assertSame("wonderful_action_name", $messageEvent->getAction());
 
 		self::assertIsArray($payload = $messageEvent->getPayload());
 		self::assertSame("wonderful_action_name", $payload["action"]);

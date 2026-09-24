@@ -49,6 +49,16 @@ readonly class MessageEvent extends ResponseWrapper
 	}
 
 	/**
+	 * Возвращает действие нажатой кнопки.
+	 * @return string|null
+	 */
+	public function getAction(): string|null
+	{
+		$action = $this->getData("payload.action");
+		return is_string($action) ? $action : null;
+	}
+
+	/**
 	 * Идентификатор сообщения в беседе. Не передаётся для клавиатур беседы.
 	 * @return int|null
 	 */
