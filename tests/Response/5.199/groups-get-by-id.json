@@ -1,0 +1,18 @@
+{
+  "response": {
+    "groups": [
+      {
+        "id": 123,
+        "members_count": 7,
+        "name": "Тест",
+        "screen_name": "test_user",
+        "is_closed": 0,
+        "type": "group",
+        "photo_50": "https://example.test/redacted",
+        "photo_100": "https://example.test/redacted",
+        "photo_200": "https://example.test/redacted"
+      }
+    ],
+    "profiles": []
+  }
+}

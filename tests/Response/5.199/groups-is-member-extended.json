@@ -1,0 +1,9 @@
+{
+  "response": [
+    {
+      "member": 0,
+      "user_id": 123,
+      "can_invite": 1
+    }
+  ]
+}

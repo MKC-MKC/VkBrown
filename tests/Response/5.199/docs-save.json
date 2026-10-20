@@ -1,0 +1,17 @@
+{
+  "response": {
+    "type": "doc",
+    "doc": {
+      "id": 123,
+      "owner_id": 123,
+      "title": "Тест",
+      "size": 50,
+      "ext": "txt",
+      "date": 1792501073,
+      "type": 1,
+      "url": "https://example.test/redacted",
+      "is_unsafe": 0,
+      "can_manage": false
+    }
+  }
+}

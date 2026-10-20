@@ -1,49 +1,63 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haikiri\VkBrown\Objects;
 
+use Haikiri\VkBrown\Exceptions\VkResponseException;
 use Haikiri\VkBrown\ResponseWrapper;
 
-/**
- * Keyboard
- * Клавиатура чат-бота — блок с кнопками, которые показываются на экране ввода сообщения.
- * Они упрощают и ускоряют общение: пользователи могут отправить сообщение или запрос, не печатая текст.
- * @see https://dev.vk.ru/ru/reference/objects/keyboard
- */
 readonly class Keyboard extends ResponseWrapper
 {
-
 	/**
-	 * Флаг, скрывать клавиатуру после нажатия или нет.
+	 * Определяем, скрывается ли клавиатура после нажатия.
+	 *
+	 * Настройка применима к обычной клавиатуре; при отсутствии поля VK использует false.
+	 * @return bool Значение one_time.
+	 * @throws VkResponseException Поле имеет неверный тип.
+	 * @see https://dev.vk.ru/ru/api/bots/development/keyboard
 	 */
 	public function isOneTime(): bool
 	{
-		return (bool)$this->getData("one_time", false);
+		return $this->read("one_time", "boolean") ?? false;
 	}
 
 	/**
-	 * Клавиатура показана внутри сообщения (true) или под ним (false).
+	 * Определяем, расположена ли клавиатура внутри сообщения.
+	 *
+	 * false означает клавиатуру под полем ввода. Отсутствие inline имеет то же значение.
+	 * @return bool Значение inline.
+	 * @throws VkResponseException Поле имеет неверный тип.
+	 * @see https://dev.vk.ru/ru/api/bots/development/keyboard
 	 */
 	public function isInline(): bool
 	{
-		return (bool)$this->getData("inline", false);
+		return $this->read("inline", "boolean") ?? false;
 	}
 
 	/**
-	 * Идентификатор автора клавиатуры (сообщество или бот).
+	 * Получаем идентификатор автора клавиатуры, если VK включил его в сообщение.
+	 *
+	 * Это поле результата; оно не требуется при отправке новой клавиатуры.
+	 * @return int|null Значение author_id.
+	 * @throws VkResponseException Поле имеет неверный тип.
+	 * @see https://dev.vk.ru/ru/reference/objects/message
 	 */
-	public function getAuthorId(): int|null
+	public function getAuthorId(): ?int
 	{
-		return $this->getData("author_id");
+		return $this->read("author_id", "integer");
 	}
 
 	/**
-	 * Массив строк с кнопками.
-	 * @return array
+	 * Получаем строки кнопок с исходными полями action и color.
+	 *
+	 * Payload каждой кнопки является JSON-строкой. Входящую клавиатуру не преобразуем в другую структуру.
+	 * @return list<list<array>> Строки кнопок; пустой список означает снятую клавиатуру.
+	 * @throws VkResponseException Отсутствует поле buttons или передан неверный тип.
+	 * @see https://dev.vk.ru/ru/api/bots/development/keyboard
 	 */
 	public function getButtons(): array
 	{
-		return (array)$this->getData("buttons", []);
+		return $this->required("buttons", "array");
 	}
-
 }

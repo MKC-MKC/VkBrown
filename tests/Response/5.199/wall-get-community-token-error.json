@@ -1,0 +1,28 @@
+{
+  "error": {
+    "error_code": 27,
+    "error_msg": "Group authorization failed: method is unavailable with group auth.",
+    "request_params": [
+      {
+        "key": "method",
+        "value": "wall.get"
+      },
+      {
+        "key": "oauth",
+        "value": "1"
+      },
+      {
+        "key": "owner_id",
+        "value": "-123"
+      },
+      {
+        "key": "count",
+        "value": "1"
+      },
+      {
+        "key": "v",
+        "value": "5.199"
+      }
+    ]
+  }
+}

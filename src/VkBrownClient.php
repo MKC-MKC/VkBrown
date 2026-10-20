@@ -4,51 +4,62 @@ declare(strict_types=1);
 
 namespace Haikiri\VkBrown;
 
+use Haikiri\VkBrown\Api\VersionRegistry;
+use Haikiri\VkBrown\Enums\ApiVersion;
+use Haikiri\VkBrown\Exceptions\VkMainException;
+use Haikiri\VkBrown\Exceptions\VkResponseException;
+use Haikiri\VkBrown\Objects\Update;
+use Haikiri\VkBrown\Services\ResponseDecoder;
+use Haikiri\VkBrown\Services\UpdateHydrator;
+use LogicException;
+
 class VkBrownClient extends VkBrownClientAbstract
 {
+	private ?Update $update = null;
+	private readonly UpdateHydrator $hydrator;
+
+	public function __construct(ApiVersion|string $version = ApiVersion::V5_199)
+	{
+		$this->hydrator = new UpdateHydrator(VersionRegistry::get($version));
+	}
 
 	/**
-	 * Метод получения ответа от API мессенджера.
-	 * @return array
+	 * Читаем JSON-объект входящего Callback-запроса из тела HTTP-запроса.
+	 * Метод не печатает ответ и не подтверждает доставку. Полученный конверт передаётся в setUpdate.
+	 * @return array<string, mixed> Полный входящий JSON-объект VK.
+	 * @throws VkResponseException Тело пустое или содержит невалидный JSON.
+	 * @see https://dev.vk.ru/ru/api/callback/getting-started
 	 */
 	public function getResponse(): array
 	{
-		if (empty($response = file_get_contents(filename: "php://input"))) return [];
-
-		$decoded = json_decode($response, true);
-		if (json_last_error() != JSON_ERROR_NONE) {
-			if (self::$debug) error_log("json_last_error: " . json_last_error());
-			if (self::$debug) error_log("json_last_error_msg: " . json_last_error_msg());
-			return [];
-		}
-
-		$message = "\n[" . date("d.m.Y H:i:s") . "] ==- Incoming Response Data -== " . print_r(json_decode($response, true), true) . PHP_EOL;
-		if (self::$debug) error_log($message);
-		return (array)$decoded ?? [];
+		$body = file_get_contents("php://input");
+		if ($body === false) throw new VkResponseException("Не удалось прочитать тело Callback-запроса.");
+		return ResponseDecoder::decodeObject($body);
 	}
 
 	/**
-	 * Записываем ответ сервера.
-	 * @param array $update
-	 * @return void
-	 * @deprecated Нелогичное название
-	 * @use self::setUpdate
+	 * Записываем полный входящий конверт либо модель обновления, полученную Long Poll.
+	 * Повторно проверяем версию и метаданные и для переданной модели Update.
+	 * @param array<string, mixed>|Update $update Полное событие сообщества.
+	 * @return static Клиент с новым текущим обновлением.
+	 * @throws VkMainException Событие не соответствует выбранному контракту.
+	 * @see https://dev.vk.ru/ru/api/community-events/json-schema
 	 */
-	public function setUpdates(array $update): void
+	public function setUpdate(array|Update $update): static
 	{
-		$this->response = $update;
-	}
-
-	/**
-	 * Записываем ответ сервера.
-	 * @param array $update
-	 * @return static
-	 */
-	public function setUpdate(array $update): self
-	{
-		$this->response = $update;
-
+		$this->update = $this->hydrator->hydrate($update instanceof Update ? $update->getAsArray() : $update);
 		return $this;
+	}
+
+	/**
+	 * Получаем текущее типизированное обновление для маршрутизации и чтения данных события.
+	 * getType() возвращает enum, а getActualMessage() и getMessageEvent() - объекты своего типа события.
+	 * @return Update Установленное событие VK.
+	 * @throws LogicException Обновление ещё не установлено.
+	 */
+	public function getUpdate(): Update
+	{
+		return $this->update ?? throw new LogicException("Сначала установите событие VK через setUpdate().");
 	}
 
 }

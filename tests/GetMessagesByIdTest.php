@@ -4,59 +4,31 @@ declare(strict_types=1);
 
 namespace Haikiri\VkBrown\Tests;
 
-use Haikiri\VkBrown\Tests\Mock\VkBrownServerMock;
-use PHPUnit\Framework\TestCase;
-
-class GetMessagesByIdTest extends TestCase
+final class GetMessagesByIdTest extends HttpTestCase
 {
-
-	private static bool $debug = false;
-	private static ?string $token = "vk1.a.Too.Long.Group.Token";
-	private static VkBrownServerMock $server;
-
-	public static function MockData($data, $isFile = true): void
+	public function testRealMessageRetainsPagingExtendedObjectsAndTypedAttachments(): void
 	{
-		self::$server = new VkBrownServerMock(
-			token: self::$token,
-			groupId: "123456789",
-			mockedData: $isFile ? file_get_contents($data) : $data,
-			debug: self::$debug,
-		);
+		$data = $this->fixture("messages-get-by-id");
+		$server = $this->server([$data]);
+		$result = $server->getMessagesById(messageIds: [123], extended: true, fields: ["photo_200"]);
+		self::assertSame($data["response"], $result->getAsArray());
+		self::assertSame(1, $result->getCount());
+		$message = $result->getItems()[0];
+		self::assertSame("Тест", $message->getText());
+		self::assertSame("photo123_123_REDACTED", $message->getAttachments()[0]->getPhoto()->getAttachment());
+		self::assertSame("txt", $message->getAttachments()[1]->getDoc()->getExt());
+		self::assertSame("sdk_test", json_decode($message->getKeyboard()->getButtons()[0][0]["action"]["payload"], true)["action"]);
+		self::assertSame("123", $this->fields(0)["message_ids"]);
+		self::assertSame("1", $this->fields(0)["extended"]);
 	}
 
-	public static function test_1()
+	public function testMessageIdsAndConversationIdsUseDifferentFields(): void
 	{
-		self::MockData(__DIR__ . "/Response/getMessagesById.json");
-		$messages = self::$server->getMessagesById(messageIds: [1, 2, 3]);
-
-		foreach ($messages as $message) {
-			echo "Message ID: " . $message->getId() . "\n";
-			echo "Is Deleted: " . ($message->isDeleted() ? "Yes" : "No") . "\n";
-			echo "From User ID: " . $message->getFromId() . "\n";
-			echo "Text: " . $message->getMessageText() . "\n";
-			echo "-----------------------\n\n";
-		}
-
-		self::assertIsArray($messages, "Ожидался массив сообщений");
-		self::assertCount(3, $messages, "Ожидалось ровно 3 сообщения");
-
-		$m = $messages[0];
-		self::assertSame(1, $m->getId());
-		self::assertFalse($m->isDeleted());
-		self::assertSame(596011113, $m->getFromId());
-		self::assertSame("Это сообщение отправлено пользователем!", $m->getMessageText());
-
-		$m = $messages[1];
-		self::assertSame(2, $m->getId());
-		self::assertTrue($m->isDeleted());
-		self::assertSame(-226352349, $m->getFromId());
-		self::assertSame("Это сообщение отправлено администратором", $m->getMessageText());
-
-		$m = $messages[2];
-		self::assertSame(3, $m->getId());
-		self::assertTrue($m->isDeleted());
-		self::assertSame(493272546, $m->getFromId());
-		self::assertSame("Это сообщение отправил администратор из ЛС как юзер и удалил его.", $m->getMessageText());
+		$data = $this->fixture("messages-get-by-cmid");
+		$server = $this->server([$data]);
+		$result = $server->getMessagesByConversationMessageId(123, [713], extended: true);
+		self::assertSame(713, $result->getItems()[0]->getConversationMessageId());
+		self::assertSame("713", $this->fields(0)["conversation_message_ids"]);
+		self::assertArrayNotHasKey("message_ids", $this->fields(0));
 	}
-
 }

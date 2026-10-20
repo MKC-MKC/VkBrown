@@ -1,15 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haikiri\VkBrown\Exceptions;
 
-use RuntimeException;
-
-class VkUnauthorizedException extends RuntimeException
+class VkUnauthorizedException extends VkMainException
 {
-
-	public function __construct(string $message = "Авторизация пользователя не удалась.", int $code = 5)
-	{
-		parent::__construct($message, $code);
-	}
-
 }

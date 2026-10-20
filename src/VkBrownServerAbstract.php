@@ -4,36 +4,91 @@ declare(strict_types=1);
 
 namespace Haikiri\VkBrown;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
+use Haikiri\VkBrown\Api\ApiContractInterface;
+use Haikiri\VkBrown\Api\VersionRegistry;
+use Haikiri\VkBrown\Enums\ApiVersion;
+use Haikiri\VkBrown\Exceptions\VkMainException;
+use Haikiri\VkBrown\Exceptions\VkResponseException;
+use Haikiri\VkBrown\Methods\Documents;
+use Haikiri\VkBrown\Methods\Groups;
+use Haikiri\VkBrown\Methods\Messages;
+use Haikiri\VkBrown\Methods\Photos;
+use Haikiri\VkBrown\Methods\Uploads;
+use Haikiri\VkBrown\Methods\Users;
+use Haikiri\VkBrown\Methods\Wall;
+use Haikiri\VkBrown\Objects\Group;
+use Haikiri\VkBrown\Objects\Update;
+use Haikiri\VkBrown\Services\ApiRequestService;
+use Haikiri\VkBrown\Services\CallbackService;
+use Haikiri\VkBrown\Services\HttpTransport;
+use Haikiri\VkBrown\Services\LongPollService;
+use Haikiri\VkBrown\Services\MessageService;
+use Haikiri\VkBrown\Services\UpdateHydrator;
+use InvalidArgumentException;
+use RuntimeException;
+
 abstract class VkBrownServerAbstract
 {
-	public static bool $debug;
+
+	use Groups;
+	use Messages;
+	use Users;
+	use Photos;
+	use Documents;
+	use Wall;
+	use Uploads;
+
+	protected readonly ApiRequestService $api;
+	protected readonly ApiContractInterface $contract;
+	protected readonly HttpTransport $transport;
+	protected readonly MessageService $messageService;
+	private readonly CallbackService $callback;
+	private readonly int $groupId;
+	private ?LongPollService $longPoll = null;
 
 	public function __construct(
-		private readonly string      $token,
-		private readonly string      $groupId,
-		private readonly string|null $confirmation = null,
-		private string|null          $version = null,
-		private string|null          $url = null,
-									 $debug = false,
+		private readonly string  $token,
+		int|string               $groupId,
+		private readonly ?string $confirmation = null,
+		ApiVersion|string        $version = ApiVersion::V5_199,
+		private readonly string  $url = "https://api.vk.ru",
+		private readonly ?string $proxy = null,
+		bool                     $debug = false,
+		?ClientInterface         $client = null,
+		?string                  $secret = null,
 	)
 	{
-		$this->version = !empty($version) ? $version : "5.199";
-		$this->url = !empty($url) ? $url : "https://api.vk.ru/";
-		self::$debug = filter_var($debug, FILTER_VALIDATE_BOOLEAN);
+		$id = filter_var($groupId, FILTER_VALIDATE_INT);
+		if ($id === false || $id <= 0) {
+			throw new InvalidArgumentException("Необходим положительный ID сообщества.");
+		}
+
+		$this->groupId = $id;
+		$this->contract = VersionRegistry::get($version);
+		$this->transport = new HttpTransport($client ?? new Client());
+		$this->api = new ApiRequestService($token, $this->contract, $this->transport, $url, $proxy, $debug);
+		$this->messageService = new MessageService($this->api);
+		$this->callback = new CallbackService($this->groupId, $confirmation, $secret);
 	}
 
 	/**
-	 * Метод возвращает API URL.
-	 * @return string
+	 * Выполняем поддерживаемый API-метод выбранной версии с исходными именами параметров VK.
+	 * Специализированные методы фасада дополнительно создают модели результатов.
+	 * @param string $method Имя метода, например groups.getById.
+	 * @param array<string, mixed> $params Параметры API без access_token.
+	 * @param array<string, string> $headers Дополнительные HTTP-заголовки.
+	 * @return Response Проверенный ответ API.
+	 * @see https://dev.vk.ru/ru/api/api-requests
 	 */
-	protected function getUrl(): string
-	{
-		return $this->url;
-	}
+	abstract public function sendRequest(string $method, array $params = [], array $headers = []): Response;
 
 	/**
-	 * Метод возвращает токен доступа.
-	 * @return string
+	 * Получаем ключ сообщества, заданный при создании сервера.
+	 * SDK передаёт его только API-серверу в заголовке Authorization, не в URL или отладочном выводе.
+	 * @return string Ключ доступа сообщества.
+	 * @see https://dev.vk.ru/ru/api/access-token/community-token
 	 */
 	public function getToken(): string
 	{
@@ -41,228 +96,144 @@ abstract class VkBrownServerAbstract
 	}
 
 	/**
-	 * Метод возвращает ID группы.
-	 * @return string
+	 * Получаем положительный идентификатор сообщества бота.
+	 * Для owner_id на стене используйте отрицательное значение этого идентификатора.
+	 * @return int Идентификатор настроенного сообщества.
 	 */
-	public function getGroupId(): string
+	public function getGroupId(): int
 	{
 		return $this->groupId;
 	}
 
 	/**
-	 * Метод возвращает версию API.
-	 * @return string
+	 * Получаем базовый адрес API, указанный при создании сервера.
+	 * Адрес Long Poll и адрес загрузки файлов выдаёт сам VK; они не заменяют базовый адрес API.
+	 * @return string Базовый адрес, по умолчанию https://api.vk.ru.
+	 * @see https://dev.vk.ru/ru/api/api-requests
 	 */
-	public function getVersion(): string
+	public function getUrl(): string
 	{
-		return $this->version;
+		return $this->url;
 	}
 
 	/**
-	 * Метод возвращает код подтверждения сервера.
-	 * @return string|null
+	 * Получаем точную версию контракта сервера.
+	 * Эта же версия передаётся в параметре v API-запросов и проверяется во входящих событиях.
+	 * @return string Номер версии, например 5.199.
+	 * @see https://dev.vk.ru/ru/reference/versions
 	 */
-	public function getConfirmation(): string|null
+	public function getVersion(): string
+	{
+		return $this->contract->getVersion();
+	}
+
+	/**
+	 * Получаем настроенную строку подтверждения Callback API.
+	 * Для проверки входящего запроса и формирования ответа используйте getCallbackResponse().
+	 * @return string|null Строка подтверждения; не запрашивается у VK автоматически.
+	 * @see https://dev.vk.ru/ru/api/callback/getting-started
+	 */
+	public function getConfirmation(): ?string
 	{
 		return $this->confirmation;
 	}
 
-	public function getMe(): Objects\User
+	/**
+	 * Получаем информацию о собственном сообществе бота тем же ключом доступа.
+	 * Это удобный вызов groups.getById для настроенного groupId, а не users.get без user_ids.
+	 * @param array|string|null $fields Дополнительные поля сообщества, например ["photo_200", "members_count"].
+	 * @return Group Объект собственного сообщества.
+	 * @throws VkResponseException Ответ не содержит ровно одно запрошенное сообщество.
+	 * @see https://dev.vk.ru/ru/method/groups.getById
+	 */
+	public function getMe(array|string|null $fields = null): Group
 	{
-		return new Objects\User($this->sendRequest(method: "users.get")->getObject());
+		$groups = $this->getGroupsById(groupIds: [$this->getGroupId()], fields: $fields)->getGroups();
+		if (count($groups) !== 1 || $groups[0]->getId() !== $this->getGroupId()) {
+			throw new VkResponseException("VK не вернул запрошенное сообщество бота.");
+		}
+
+		return $groups[0];
 	}
 
 	/**
-	 * Метод отправляет сообщение.
-	 * @see https://dev.vk.com/ru/method/messages.send
+	 * Проверяем принадлежность Callback-запроса группе и настроенную секретную строку.
+	 * Выполняйте проверку до запуска команд бота и записи события в очередь.
+	 * @param Update $update Полный конверт события VK.
+	 * @return void
+	 * @throws RuntimeException Неверная группа или secret.
+	 * @see https://dev.vk.ru/ru/api/callback/getting-started
 	 */
-	public function sendMessage(
-		int|string  $peerId,
-		string|null $text = null,
-		int|null    $userId = null,
-		string|null $peerIds = null,
-		string|null $domain = null,
-		int|null    $chatId = null,
-		string|null $userIds = null, /** @deprecated from 5.138 */
-		string|null $lat = null,
-		string|null $long = null,
-		string|null $attachment = null,
-		int|null    $replyTo = null, /** @deprecated from 5.221 */
-		string|null $forwardMessages = null, /** @deprecated from 5.221 */
-		string|null $forward = null,
-		int|null    $stickerId = null,
-		int|null    $groupId = null,
-		array|null  $keyboard = null,
-		string|null $template = null,
-		string|null $payload = null,
-		string|null $contentSource = null,
-		bool|null   $dontParseLinks = null,
-		bool|null   $disableMentions = null,
-		string|null $intent = null,
-		int|null    $subscribeId = null,
-		int|null    $randomId = null
-	)
+	public function validateCallback(Update $update): void
 	{
-		$params = [
-			"peer_id" => $peerId,
-			"random_id" => $randomId ?? mt_rand(0, PHP_INT_MAX),
-		];
-
-		if ($text !== null) $params["message"] = $text;
-		if ($userId !== null) $params["user_id"] = $userId;
-		if ($peerIds !== null) $params["peer_ids"] = $peerIds;
-		if ($domain !== null) $params["domain"] = $domain;
-		if ($chatId !== null) $params["chat_id"] = $chatId;
-		if ($userIds !== null) $params["user_ids"] = $userIds;
-		if ($lat !== null) $params["lat"] = $lat;
-		if ($long !== null) $params["long"] = $long;
-		if ($attachment !== null) $params["attachment"] = $attachment;
-		if ($replyTo !== null) $params["reply_to"] = $replyTo;
-		if ($forwardMessages !== null) $params["forward_messages"] = $forwardMessages;
-		if ($forward !== null) $params["forward"] = $forward;
-		if ($stickerId !== null) $params["sticker_id"] = $stickerId;
-		if ($groupId !== null) $params["group_id"] = $groupId;
-		if ($keyboard !== null) $params["keyboard"] = json_encode($keyboard);
-		if ($template !== null) $params["template"] = $template;
-		if ($payload !== null) $params["payload"] = $payload;
-		if ($contentSource !== null) $params["content_source"] = $contentSource;
-		if ($dontParseLinks !== null) $params["dont_parse_links"] = (int)$dontParseLinks;
-		if ($disableMentions !== null) $params["disable_mentions"] = (int)$disableMentions;
-		if ($intent !== null) $params["intent"] = $intent;
-		if ($subscribeId !== null) $params["subscribe_id"] = $subscribeId;
-
-		return $this->sendRequest("messages.send", $params);
+		$this->callback->validate($update);
 	}
 
 	/**
-	 * Удаляет сообщение.
-	 * @see https://dev.vk.com/ru/method/messages.delete
-	 * @noinspection SpellCheckingInspection
+	 * Формируем ответ на проверенный Callback-запрос без самостоятельного HTTP-вывода.
+	 * Возвращаем confirmation для подтверждения сервера или ok для обычного события.
+	 * @param Update $update Полный входящий конверт VK.
+	 * @return string Тело ответа Callback API.
+	 * @throws RuntimeException Запрос не прошёл проверку либо отсутствует строка подтверждения.
+	 * @see https://dev.vk.ru/ru/api/callback/getting-started
 	 */
-	public function deleteMessages(
-		array|null      $messageIds = null,
-		array|null      $cmIds = null,
-		string|int|null $peerId = null,
-		string|int|null $groupId = null,
-		bool            $deleteForAll = true,
-		bool|null       $spam = null,
-		int|null        $reason = null,
-	): mixed
+	public function getCallbackResponse(Update $update): string
 	{
-		$params = [];
-		if ($messageIds !== null) $params["message_ids"] = implode(",", array_map("strval", $messageIds));
-		if ($cmIds !== null) $params["cmids"] = implode(",", array_map("strval", $cmIds));
-		if ($peerId !== null) $params["peer_id"] = (int)$peerId;
-		if ($groupId !== null) $params["group_id"] = (int)$groupId;
-		if ($deleteForAll !== null) $params["delete_for_all"] = (int)$deleteForAll;
-		if ($spam !== null) $params["spam"] = (int)$spam;
-		if ($reason !== null) $params["reason"] = $reason;
-
-		return $this->sendRequest("messages.delete", $params);
+		return $this->callback->answer($update);
 	}
 
 	/**
-	 * Редактирует сообщение.
-	 * @see https://dev.vk.com/ru/method/messages.edit
-	 * @noinspection SpellCheckingInspection
+	 * Получаем одну порцию событий Bots Long Poll с сохранением ключа сессии и нового ts.
+	 * Метод не меняет подписки сообщества. Для этого вызывается setGroupLongPollSettings().
+	 * @param int|string|null $offset Сохранённый ts для начала или продолжения сессии.
+	 * @param int $timeout Параметр wait: от 0 до 90 секунд, по умолчанию 25.
+	 * @return list<Update> Полные события с type, event_id, group_id, v и object.
+	 * @throws VkMainException Ошибка соединения, события или протокола Long Poll.
+	 * @see https://dev.vk.ru/ru/api/bots-long-poll/getting-started
 	 */
-	public function editMessage(
-		int|string  $peerId,
-		int|null    $messageId = null,
-		int|null    $cmId = null,
-		string|null $message = null,
-		string|null $lat = null,
-		string|null $long = null,
-		string|null $attachment = null,
-		bool|null   $keepForwardMessages = null,
-		bool|null   $keepSnippets = null,
-		int|null    $groupId = null,
-		bool|null   $dontParseLinks = null,
-		bool|null   $disableMentions = null,
-		string|null $template = null,
-		array|null  $keyboard = null
-	)
+	public function getUpdates(int|string|null $offset = null, int $timeout = 25): array
 	{
-		$params = ["peer_id" => $peerId];
-		if ($messageId !== null) $params["message_id"] = $messageId;
-		if ($cmId !== null) $params["cmid"] = $cmId;
-		if ($message !== null) $params["message"] = $message;
-		if ($lat !== null) $params["lat"] = $lat;
-		if ($long !== null) $params["long"] = $long;
-		if ($attachment !== null) $params["attachment"] = $attachment;
-		if ($keepForwardMessages !== null) $params["keep_forward_messages"] = (int)$keepForwardMessages;
-		if ($keepSnippets !== null) $params["keep_snippets"] = (int)$keepSnippets;
-		if ($groupId !== null) $params["group_id"] = $groupId;
-		if ($dontParseLinks !== null) $params["dont_parse_links"] = (int)$dontParseLinks;
-		if ($disableMentions !== null) $params["disable_mentions"] = (int)$disableMentions;
-		if ($template !== null) $params["template"] = $template;
-		if ($keyboard !== null) $params["keyboard"] = json_encode($keyboard);
+		$this->longPoll ??= new LongPollService(
+			api: $this->api,
+			transport: $this->transport,
+			hydrator: new UpdateHydrator($this->contract),
+			groupId: $this->groupId,
+		);
 
-		return $this->sendRequest("messages.edit", $params);
+		return $this->longPoll->poll($offset, $timeout);
 	}
 
 	/**
-	 * Возвращает сообщения по их идентификаторам.
-	 * @see https://dev.vk.com/ru/method/messages.getById
-	 * @return Objects\Message[]
-	 * @noinspection SpellCheckingInspection
+	 * Получаем текущую позицию чтения Bots Long Poll для сохранения между запусками приложения.
+	 * Значение обновляется только после успешного разбора порции событий или обработки failed по протоколу.
+	 * @return string|null Последний ts либо null до первого запроса Long Poll.
+	 * @see https://dev.vk.ru/ru/api/bots-long-poll/getting-started
 	 */
-	public function getMessagesById(
-		array           $messageIds,
-		int|string|null $peerId = null,
-		string|null     $cmIds = null,
-		int|null        $groupId = null,
-		int|null        $previewLength = null,
-		bool|null       $extended = null,
-		string|null     $fields = null,
-	): array
+	public function getLongPollTimestamp(): ?string
 	{
-		$params = [];
-		$params["message_ids"] = implode(",", array_map("strval", $messageIds));
-		if ($peerId !== null) $params["peer_id"] = $peerId;
-		if ($cmIds !== null) $params["cmids"] = $cmIds;
-		if ($groupId !== null) $params["group_id"] = $groupId;
-		if ($previewLength !== null) $params["preview_length"] = $previewLength;
-		if ($extended !== null) $params["extended"] = (int)$extended;
-		if ($fields !== null) $params["fields"] = $fields;
-
-		$response = $this->sendRequest("messages.getById", $params);
-		return array_map(fn(array $item): Objects\Message => new Objects\Message($item), $response?->getItems() ?? []);
+		return $this->longPoll?->getTimestamp();
 	}
 
 	/**
-	 * Метод позволяет получить информацию о пользователях.
-	 * @see https://dev.vk.com/ru/method/users.get
-	 * @param array $userIds Массив идентификаторов пользователей.
-	 * @param array|null $fields Массив полей, которые необходимо вернуть.
-	 * @param string $nameCase Падеж для склонения имени и фамилии пользователя. Именительный по умолчанию.
-	 * @return Objects\User[]
+	 * Задаём время ожидания обычного запроса API или загрузки файла.
+	 * Long Poll использует wait + 10 секунд. Значение 0 отключает ограничение обычных запросов.
+	 * @param float $seconds Тайм-аут в секундах.
+	 * @return void
 	 */
-	public function getUsers(array $userIds, array|null $fields = null, string $nameCase = "nom"): array
+	public function setTimeout(float $seconds): void
 	{
-		$params = [];
-		$params["user_ids"] = implode(",", array_map("strval", $userIds));
-		if ($fields !== null) $params["fields"] = implode(",", array_map("strval", $fields));
-		if ($nameCase !== null) $params["name_case"] = $nameCase;
-
-		$response = $this->sendRequest("users.get", $params);
-		return array_map(fn(array $item): Objects\User => new Objects\User($item), $response->getRaw() ?? []);
+		$this->api->setTimeout($seconds);
 	}
 
 	/**
-	 * Метод отправляет событие с действием, которое произойдет при нажатии на callback-кнопку.
-	 * @see https://dev.vk.com/ru/method/messages.sendMessageEventAnswer
+	 * Задаём время установления соединения для всех запросов SDK.
+	 * Настройка не ограничивает время ожидания событий Long Poll после подключения.
+	 * @param float $seconds Тайм-аут соединения в секундах; 0 отключает ограничение.
+	 * @return void
 	 */
-	public function sendMessageEventAnswer(string $eventId, int|string $userId, int|string $peerId, array $eventData)
+	public function setConnectTimeout(float $seconds): void
 	{
-		$params = [
-			"event_id" => $eventId,
-			"user_id" => (int)$userId,
-			"peer_id" => (int)$peerId,
-			"event_data" => $eventData,
-		];
-
-		return $this->sendRequest("messages.sendMessageEventAnswer", $params);
+		$this->api->setConnectTimeout($seconds);
 	}
 
 }

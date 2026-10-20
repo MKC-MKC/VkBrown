@@ -1,70 +1,82 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Haikiri\VkBrown\Objects;
 
+use Haikiri\VkBrown\Exceptions\VkResponseException;
+use Haikiri\VkBrown\Objects\Traits\PayloadActionTrait;
 use Haikiri\VkBrown\ResponseWrapper;
 
-/**
- * События в сообществах
- * @see https://dev.vk.com/ru/api/community-events/json-schema#message_event
- */
 readonly class MessageEvent extends ResponseWrapper
 {
 
+	use PayloadActionTrait;
+
 	/**
-	 * Случайная строка.
-	 * Активна в течение минуты, спустя минуту становится недействительной.
-	 * @return string
+	 * Идентификатор события; для message_event используется при ответе на нажатие кнопки.
+	 *
+	 * Поле обязательно для этого результата.
+	 * @return string Значение поля event_id.
+	 * @throws VkResponseException Поле имеет неверный тип.
+	 * @see https://dev.vk.ru/ru/api/community-events/json-schema#message_event
 	 */
 	public function getEventId(): string
 	{
-		return (string)$this->getData("event_id");
+		return $this->required("event_id", "string");
 	}
 
 	/**
 	 * Идентификатор пользователя.
-	 * @return int
+	 *
+	 * Поле обязательно для этого результата.
+	 * @return int Значение поля user_id.
+	 * @throws VkResponseException Поле имеет неверный тип.
+	 * @see https://dev.vk.ru/ru/api/community-events/json-schema#message_event
 	 */
 	public function getUserId(): int
 	{
-		return (int)$this->getData("user_id");
+		return $this->required("user_id", "integer");
 	}
 
 	/**
-	 * Идентификатор диалога со стороны бота.
-	 * @return int
+	 * Идентификатор назначения: пользователя, сообщества или беседы.
+	 *
+	 * Поле обязательно для этого результата.
+	 * @return int Значение поля peer_id.
+	 * @throws VkResponseException Поле имеет неверный тип.
+	 * @see https://dev.vk.ru/ru/api/community-events/json-schema#message_event
 	 */
 	public function getPeerId(): int
 	{
-		return (int)$this->getData("peer_id");
+		return $this->required("peer_id", "integer");
 	}
 
 	/**
-	 * Дополнительная информация, указанная в клавише.
-	 * @return array|mixed
+	 * Уникальный автоматически увеличивающийся номер сообщения в этом диалоге.
+	 *
+	 * Поле обязательно для этого результата.
+	 * @return int Значение поля conversation_message_id.
+	 * @throws VkResponseException Поле имеет неверный тип.
+	 * @see https://dev.vk.ru/ru/api/community-events/json-schema#message_event
+	 */
+	public function getConversationMessageId(): int
+	{
+		return $this->required("conversation_message_id", "integer");
+	}
+
+	/**
+	 * Дополнительная информация, указанная в клавише. VK описывает тип как any; исходное значение
+	 * сохраняется.
+	 *
+	 * Поле может отсутствовать: состав данных зависит от метода, параметров fields и прав доступа.
+	 * @return mixed Значение поля payload.
+	 * @throws VkResponseException Поле имеет неверный тип.
+	 * @see https://dev.vk.ru/ru/api/community-events/json-schema#message_event
 	 */
 	public function getPayload(): mixed
 	{
 		return $this->getData("payload");
-	}
-
-	/**
-	 * Возвращает действие нажатой кнопки.
-	 * @return string|null
-	 */
-	public function getAction(): string|null
-	{
-		$action = $this->getData("payload.action");
-		return is_string($action) ? $action : null;
-	}
-
-	/**
-	 * Идентификатор сообщения в беседе. Не передаётся для клавиатур беседы.
-	 * @return int|null
-	 */
-	public function getConversationMessageId(): int|null
-	{
-		return (int)$this->getData("conversation_message_id");
 	}
 
 }

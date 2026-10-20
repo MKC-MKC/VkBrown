@@ -5,32 +5,22 @@ declare(strict_types=1);
 namespace Haikiri\VkBrown\Tests;
 
 use Haikiri\VkBrown\VkBrownClient;
-use PHPUnit\Framework\TestCase;
 
-class MessageEventTest extends TestCase
+final class MessageEventTest extends HttpTestCase
 {
-
-	public static function MockData($data): array
+	public function testCallbackEventCanEditByCmidAndAnswerWithButtonEventId(): void
 	{
-		$raw = file_get_contents($data);
-		return json_decode($raw, true);
+		$data = $this->decodeJson(file_get_contents(__DIR__ . "/Response/messageEvent.json"));
+		$event = (new VkBrownClient())->setUpdate($data)->getUpdate()->getMessageEvent();
+		$server = $this->server([$this->fixture("messages-edit"), ["response" => 1]]);
+		self::assertSame("wonderful_action_name", $event->getPayloadAction());
+		self::assertTrue($server->editMessage(peerId: $event->getPeerId(), message: "Изменено", cmid: $event->getConversationMessageId()));
+		self::assertSame("Изменено", $this->fields(0)["message"]);
+		self::assertSame("900", $this->fields(0)["cmid"]);
+		self::assertArrayNotHasKey("message_id", $this->fields(0));
+		self::assertTrue($server->sendMessageEventAnswer($event->getEventId(), $event->getUserId(), $event->getPeerId(), ["type" => "show_snackbar", "text" => "Готово"]));
+		self::assertSame($data["object"]["event_id"], $this->fields(1)["event_id"]);
+		self::assertNotSame($data["event_id"], $this->fields(1)["event_id"]);
+		self::assertSame(["type" => "show_snackbar", "text" => "Готово"], json_decode($this->fields(1)["event_data"], true));
 	}
-
-	public static function testsForMessageEventData()
-	{
-		$data = self::MockData(__DIR__ . "/Response/messageEvent.json");
-		$update = (new VkBrownClient())->setUpdate($data["object"])->getUpdate();
-		$messageEvent = $update->getMessageEvent();
-
-		self::assertSame(111111111, $messageEvent->getUserId());
-		self::assertSame(222222222, $messageEvent->getPeerId());
-		self::assertSame("863e06ef1e79", $messageEvent->getEventId());
-		self::assertSame(900, $messageEvent->getConversationMessageId());
-		self::assertSame("wonderful_action_name", $messageEvent->getAction());
-
-		self::assertIsArray($payload = $messageEvent->getPayload());
-		self::assertSame("wonderful_action_name", $payload["action"]);
-		self::assertSame(1234, $payload["someCustomDataHere"]);
-	}
-
 }

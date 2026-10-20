@@ -1,0 +1,26 @@
+{
+  "ts": "734",
+  "updates": [
+    {
+      "group_id": 123,
+      "type": "message_reply",
+      "event_id": "3cf8241dd96ee1325c3b15efbcadcbc3aff2ccb9",
+      "v": "5.199",
+      "object": {
+        "date": 1792501112,
+        "from_id": -123,
+        "id": 123,
+        "version": 10011677,
+        "out": 1,
+        "fwd_messages": [],
+        "important": false,
+        "is_hidden": false,
+        "attachments": [],
+        "conversation_message_id": 714,
+        "text": "Тест",
+        "peer_id": 123,
+        "random_id": 946055357
+      }
+    }
+  ]
+}

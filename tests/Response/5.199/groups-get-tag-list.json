@@ -1,0 +1,24 @@
+{
+  "error": {
+    "error_code": 15,
+    "error_msg": "Access denied",
+    "request_params": [
+      {
+        "key": "method",
+        "value": "groups.getTagList"
+      },
+      {
+        "key": "oauth",
+        "value": "1"
+      },
+      {
+        "key": "group_id",
+        "value": "123"
+      },
+      {
+        "key": "v",
+        "value": "5.199"
+      }
+    ]
+  }
+}

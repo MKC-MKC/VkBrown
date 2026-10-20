@@ -7,7 +7,6 @@ namespace Haikiri\VkBrown\Enums;
 enum KeyboardColor: string
 {
 
-	case NONE = "";
 	case RED = "negative";
 	case GREEN = "positive";
 	case BLUE = "primary";

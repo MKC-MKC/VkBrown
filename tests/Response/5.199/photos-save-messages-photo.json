@@ -1,0 +1,52 @@
+{
+  "response": [
+    {
+      "album_id": -64,
+      "date": 1792501071,
+      "id": 123,
+      "owner_id": 123,
+      "access_key": "REDACTED",
+      "sizes": [
+        {
+          "height": 64,
+          "type": "s",
+          "width": 64,
+          "url": "https://example.test/redacted"
+        },
+        {
+          "height": 64,
+          "type": "m",
+          "width": 64,
+          "url": "https://example.test/redacted"
+        },
+        {
+          "height": 64,
+          "type": "x",
+          "width": 64,
+          "url": "https://example.test/redacted"
+        },
+        {
+          "height": 64,
+          "type": "y",
+          "width": 64,
+          "url": "https://example.test/redacted"
+        },
+        {
+          "height": 64,
+          "type": "base",
+          "width": 64,
+          "url": "https://example.test/redacted"
+        }
+      ],
+      "text": "Тест",
+      "web_view_token": "REDACTED",
+      "has_tags": false,
+      "orig_photo": {
+        "height": 64,
+        "type": "base",
+        "url": "https://example.test/redacted",
+        "width": 64
+      }
+    }
+  ]
+}

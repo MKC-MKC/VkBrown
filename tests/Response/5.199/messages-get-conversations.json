@@ -1,0 +1,108 @@
+{
+  "response": {
+    "count": 9,
+    "items": [
+      {
+        "conversation": {
+          "peer": {
+            "id": 123,
+            "type": "user",
+            "local_id": 199051021
+          },
+          "last_message_id": 3489,
+          "last_conversation_message_id": 712,
+          "in_read": 3489,
+          "out_read": 3489,
+          "in_read_cmid": 712,
+          "out_read_cmid": 712,
+          "version": 10011672,
+          "sort_id": {
+            "major_id": 0,
+            "minor_id": 3489
+          },
+          "is_marked_unread": false,
+          "important": true,
+          "push_settings": {
+            "disabled_forever": false,
+            "no_sound": false,
+            "disabled_mentions": false,
+            "disabled_mass_mentions": false
+          },
+          "can_write": {
+            "allowed": true
+          },
+          "peer_flags": 1,
+          "timestamp": 1787144163
+        },
+        "last_message": {
+          "date": 1787144163,
+          "from_id": -123,
+          "id": 123,
+          "version": 10011672,
+          "out": 1,
+          "important": false,
+          "is_hidden": false,
+          "admin_author_id": 123,
+          "attachments": [],
+          "conversation_message_id": 712,
+          "fwd_messages": [],
+          "keyboard": {
+            "one_time": false,
+            "buttons": [
+              [
+                {
+                  "action": {
+                    "label": "Оплатить 126.69 рублей",
+                    "link": "https://example.test/redacted",
+                    "type": "open_link",
+                    "payload": ""
+                  },
+                  "color": "default"
+                }
+              ]
+            ],
+            "author_id": -226352349,
+            "inline": true
+          },
+          "text": "Тест",
+          "update_time": 1787144166,
+          "peer_id": 123,
+          "random_id": -437767516
+        }
+      }
+    ],
+    "profiles": [
+      {
+        "id": 123,
+        "sex": 2,
+        "screen_name": "test_user",
+        "photo_50": "https://example.test/redacted",
+        "photo_100": "https://example.test/redacted",
+        "online_info": {
+          "visible": true,
+          "last_seen": 1792487296,
+          "is_online": false,
+          "app_id": 6287487,
+          "is_mobile": false
+        },
+        "online": 0,
+        "first_name": "Тест",
+        "last_name": "Тест",
+        "can_access_closed": true,
+        "is_closed": false
+      }
+    ],
+    "groups": [
+      {
+        "id": 123,
+        "name": "Тест",
+        "screen_name": "test_user",
+        "is_closed": 0,
+        "type": "group",
+        "photo_50": "https://example.test/redacted",
+        "photo_100": "https://example.test/redacted",
+        "photo_200": "https://example.test/redacted"
+      }
+    ]
+  }
+}

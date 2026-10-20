@@ -1,0 +1,16 @@
+{
+  "response": {
+    "count": 7,
+    "items": [
+      {
+        "id": 123,
+        "photo_200": "https://example.test/redacted",
+        "first_name": "Тест",
+        "last_name": "Тест",
+        "can_access_closed": true,
+        "is_closed": false
+      }
+    ],
+    "next_from": "PUkGEFNHDhJkUVgL"
+  }
+}

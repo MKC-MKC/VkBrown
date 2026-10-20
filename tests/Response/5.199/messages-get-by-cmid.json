@@ -1,0 +1,151 @@
+{
+  "response": {
+    "count": 1,
+    "items": [
+      {
+        "date": 1792501073,
+        "from_id": -123,
+        "id": 123,
+        "version": 10011673,
+        "out": 1,
+        "important": false,
+        "is_hidden": false,
+        "attachments": [
+          {
+            "type": "photo",
+            "photo": {
+              "album_id": -64,
+              "date": 1792501071,
+              "id": 123,
+              "owner_id": 123,
+              "access_key": "REDACTED",
+              "sizes": [
+                {
+                  "height": 64,
+                  "type": "s",
+                  "width": 64,
+                  "url": "https://example.test/redacted"
+                },
+                {
+                  "height": 64,
+                  "type": "m",
+                  "width": 64,
+                  "url": "https://example.test/redacted"
+                },
+                {
+                  "height": 64,
+                  "type": "x",
+                  "width": 64,
+                  "url": "https://example.test/redacted"
+                },
+                {
+                  "height": 64,
+                  "type": "y",
+                  "width": 64,
+                  "url": "https://example.test/redacted"
+                },
+                {
+                  "height": 64,
+                  "type": "base",
+                  "width": 64,
+                  "url": "https://example.test/redacted"
+                }
+              ],
+              "text": "Тест",
+              "web_view_token": "REDACTED",
+              "has_tags": false,
+              "orig_photo": {
+                "height": 64,
+                "type": "base",
+                "url": "https://example.test/redacted",
+                "width": 64
+              }
+            }
+          },
+          {
+            "type": "doc",
+            "doc": {
+              "id": 123,
+              "owner_id": 123,
+              "title": "Тест",
+              "size": 50,
+              "ext": "txt",
+              "date": 1792501073,
+              "type": 1,
+              "url": "https://example.test/redacted",
+              "is_unsafe": 0,
+              "access_key": "REDACTED",
+              "can_manage": false
+            }
+          }
+        ],
+        "conversation_message_id": 713,
+        "fwd_messages": [],
+        "keyboard": {
+          "one_time": false,
+          "buttons": [
+            [
+              {
+                "action": {
+                  "label": "Проверка",
+                  "type": "callback",
+                  "payload": "{\"action\":\"sdk_test\"}"
+                },
+                "color": "default"
+              }
+            ],
+            [
+              {
+                "action": {
+                  "label": "VK",
+                  "link": "https://example.test/redacted",
+                  "type": "open_link",
+                  "payload": ""
+                },
+                "color": "default"
+              }
+            ]
+          ],
+          "author_id": -226352349,
+          "inline": true
+        },
+        "text": "Тест",
+        "peer_id": 123,
+        "random_id": 39804967
+      }
+    ],
+    "profiles": [
+      {
+        "id": 123,
+        "sex": 2,
+        "screen_name": "test_user",
+        "photo_50": "https://example.test/redacted",
+        "photo_100": "https://example.test/redacted",
+        "online_info": {
+          "visible": true,
+          "last_seen": 1792501060,
+          "is_online": false,
+          "app_id": 2274003,
+          "is_mobile": true
+        },
+        "online": 0,
+        "first_name": "Тест",
+        "last_name": "Тест",
+        "can_access_closed": true,
+        "is_closed": false
+      }
+    ],
+    "groups": [
+      {
+        "id": 123,
+        "name": "Тест",
+        "screen_name": "test_user",
+        "is_closed": 0,
+        "type": "group",
+        "photo_50": "https://example.test/redacted",
+        "photo_100": "https://example.test/redacted",
+        "photo_200": "https://example.test/redacted"
+      }
+    ]
+  }
+}

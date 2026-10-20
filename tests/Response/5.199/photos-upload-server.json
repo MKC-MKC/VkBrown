@@ -1,0 +1,8 @@
+{
+  "response": {
+    "album_id": -64,
+    "upload_url": "https://example.test/redacted",
+    "user_id": 123,
+    "group_id": 123
+  }
+}

@@ -1,0 +1,31 @@
+{
+    "response": {
+        "mask": 405509,
+        "permissions": [
+            {
+                "name": "photos",
+                "setting": 4
+            },
+            {
+                "name": "docs",
+                "setting": 131072
+            },
+            {
+                "name": "messages",
+                "setting": 4096
+            },
+            {
+                "name": "wall",
+                "setting": 8192
+            },
+            {
+                "name": "manage",
+                "setting": 262144
+            },
+            {
+                "name": "stories",
+                "setting": 1
+            }
+        ]
+    }
+}

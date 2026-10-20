@@ -1,0 +1,20 @@
+{
+  "response": [
+    {
+      "id": 123,
+      "bdate": "1.1.2000",
+      "city": {
+        "id": 123,
+        "title": "Тест"
+      },
+      "photo_200": "https://example.test/redacted",
+      "photo_max": "https://example.test/redacted",
+      "photo_50": "https://example.test/redacted",
+      "photo_100": "https://example.test/redacted",
+      "first_name": "Тест",
+      "last_name": "Тест",
+      "can_access_closed": true,
+      "is_closed": false
+    }
+  ]
+}
